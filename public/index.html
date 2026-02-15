@@ -184,10 +184,11 @@
     .loader-text {
       font-family: var(--font);
       font-size: 42px; font-weight: 900;
-      color: #FFFFFF;
+      color: var(--amarillo);
       letter-spacing: -0.04em;
       opacity: 0;
     }
+    .loader-text span { color: var(--rojo); }
     .loader-bar {
       width: 120px; height: 3px;
       background: rgba(255,255,255,0.1);
@@ -218,12 +219,11 @@
     .nav-brand {
       font-family: var(--font);
       font-size: 20px; font-weight: 900;
-      color: var(--text-primary);
+      color: var(--amarillo);
       letter-spacing: -0.03em;
       text-decoration: none;
-      transition: color var(--transition-theme);
     }
-    .nav-brand span { font-weight: 400; }
+    .nav-brand span { font-weight: 900; color: var(--rojo); }
     .nav-cta {
       font-family: var(--font);
       font-size: 14px; font-weight: 600;
@@ -593,9 +593,10 @@
     }
     .footer-brand {
       font-size: 24px; font-weight: 900;
-      color: var(--footer-brand);
       letter-spacing: -0.03em;
     }
+    .footer-brand .hola { color: var(--amarillo); opacity: 0.4; }
+    .footer-brand .spansk { color: var(--rojo); opacity: 0.4; }
     .footer-sub {
       font-size: 14px; color: var(--footer-sub);
       margin-top: 12px; font-weight: 400;
@@ -643,7 +644,7 @@
 
   <!-- LOADING SCREEN -->
   <div class="loader" id="loader">
-    <div class="loader-text" id="loaderText">hola<span style="font-weight:400">Spansk</span></div>
+    <div class="loader-text" id="loaderText">hola<span>Spansk</span></div>
     <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
   </div>
 
@@ -753,13 +754,13 @@
     </div>
     <div class="cta-success" id="ctaSuccess">
       <h2>¡Bienvenido!</h2>
-      <p>Du er nå en del av holaSpansk. Vi sees i innboksen.</p>
+      <p>Du er nå en del av <span style="color:var(--amarillo);font-weight:700">hola</span><span style="color:var(--rojo);font-weight:700">Spansk</span>. Vi sees i innboksen.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-brand">holaSpansk</div>
+    <div class="footer-brand"><span class="hola">hola</span><span class="spansk">Spansk</span></div>
     <div class="footer-sub">Fra Norge, med kjærlighet til Spania</div>
     <div class="footer-links">
       <a href="#">Instagram</a>
