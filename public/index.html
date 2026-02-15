@@ -1,122 +1,857 @@
 <!DOCTYPE html>
 <html lang="nb">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>holaSpansk — Kom nærmere Spania</title>
-  <meta name="description" content="Språk, kultur og liv fra Spania — fortalt innenfra. For nordmenn som vil mer enn ferie." />
-  <meta property="og:title" content="holaSpansk — Kom nærmere Spania" />
-  <meta property="og:description" content="Språk, kultur og liv fra Spania — fortalt innenfra." />
-  <meta property="og:image" content="/logo.png" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css" />
+  <meta name="description" content="Språk, kultur og liv fra Spania — fortalt innenfra. For nordmenn som vil mer enn ferie.">
+  <meta property="og:title" content="holaSpansk — Kom nærmere Spania">
+  <meta property="og:description" content="Språk, kultur og liv fra Spania — fortalt innenfra.">
+  <meta property="og:image" content="/logo.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rojo: #E11D48;
+      --amarillo: #F59E0B;
+      --azul: #0EA5E9;
+      --negro: #1F2937;
+      --gris: #6B7280;
+      --gris-claro: #9CA3AF;
+      --blanco: #FFFFFF;
+      --crema: #FFFBF5;
+      --arena: #FEF7EC;
+      --font: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--negro);
+      background: var(--crema);
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR GLOW ── */
+    .cursor-glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      mix-blend-mode: normal;
+    }
+
+    /* ── LOADING SCREEN ── */
+    .loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--negro);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 20px;
+    }
+    .loader-text {
+      font-family: var(--font);
+      font-size: 42px; font-weight: 900;
+      color: var(--blanco);
+      letter-spacing: -0.04em;
+      opacity: 0;
+    }
+    .loader-bar {
+      width: 120px; height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px; overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%; width: 0%;
+      background: var(--rojo);
+      border-radius: 2px;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px clamp(24px, 5vw, 80px);
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(255,251,245,0.7);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      transform: translateY(-100%);
+    }
+    .nav-brand {
+      font-family: var(--font);
+      font-size: 20px; font-weight: 900;
+      color: var(--negro);
+      letter-spacing: -0.03em;
+      text-decoration: none;
+    }
+    .nav-brand span { font-weight: 400; }
+    .nav-cta {
+      font-family: var(--font);
+      font-size: 14px; font-weight: 600;
+      color: var(--blanco);
+      background: var(--rojo);
+      border: none; border-radius: 100px;
+      padding: 10px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 20px rgba(225,29,72,0.3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 80px clamp(24px, 5vw, 80px) 60px;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 30%, rgba(245,158,11,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(14,165,233,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 15% 70%, rgba(225,29,72,0.04) 0%, transparent 50%),
+        linear-gradient(175deg, var(--crema) 0%, var(--arena) 50%, #F0F7FC 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; text-align: center; }
+
+    .hero-logo {
+      width: clamp(160px, 22vw, 260px);
+      height: auto;
+      margin-bottom: 48px;
+      filter: drop-shadow(0 16px 48px rgba(0,0,0,0.06));
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 8vw, 100px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      color: var(--negro);
+    }
+    .hero-title .line { display: block; overflow: hidden; }
+    .hero-title .line-inner {
+      display: block;
+      transform: translateY(110%);
+    }
+    .hero-title .accent { color: var(--rojo); }
+
+    .hero-sub {
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 400;
+      color: var(--gris);
+      margin-top: 28px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, transparent, var(--negro));
+    }
+    .hero-scroll-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rojo);
+      animation: scrollDot 2s ease-in-out infinite;
+    }
+    @keyframes scrollDot {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(8px); opacity: 0.2; }
+    }
+
+    /* ── MANIFESTO ── */
+    .manifesto {
+      padding: clamp(120px, 18vh, 240px) clamp(24px, 5vw, 80px);
+      display: flex; justify-content: center;
+      background: var(--blanco);
+      position: relative;
+    }
+    .manifesto-inner { max-width: 800px; }
+    .manifesto-word {
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--negro);
+      letter-spacing: -0.02em;
+    }
+    .manifesto-word .word {
+      display: inline-block;
+      opacity: 0.08;
+      transition: opacity 0.4s;
+    }
+    .manifesto-word .word.active { opacity: 1; }
+    .manifesto-word .highlight { color: var(--amarillo); font-weight: 600; }
+    .manifesto-word .strong { color: var(--rojo); font-weight: 700; }
+
+    .manifesto-divider {
+      width: 60px; height: 3px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--rojo), var(--amarillo));
+      margin-top: 60px; opacity: 0;
+    }
+
+    /* ── PILLARS ── */
+    .pillars {
+      padding: clamp(120px, 18vh, 240px) clamp(24px, 5vw, 80px);
+      background: var(--crema);
+      display: flex; justify-content: center;
+    }
+    .pillars-inner { max-width: 1000px; width: 100%; }
+
+    .pillar {
+      display: flex; align-items: baseline;
+      gap: clamp(32px, 5vw, 72px);
+      padding: clamp(40px, 5vh, 64px) 0;
+      border-bottom: 1px solid rgba(245,158,11,0.12);
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    .pillar:last-child { border-bottom: none; }
+
+    .pillar-number {
+      font-size: 14px; font-weight: 500;
+      color: var(--gris-claro);
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+      min-width: 36px;
+    }
+
+    .pillar-word {
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+      flex-shrink: 0;
+      min-width: clamp(120px, 22vw, 260px);
+      -webkit-text-stroke: 2px currentColor;
+      -webkit-text-fill-color: transparent;
+      transition: -webkit-text-fill-color 0.4s;
+    }
+    .pillar:hover .pillar-word { -webkit-text-fill-color: currentColor; }
+
+    .pillar-desc {
+      font-size: clamp(17px, 2vw, 22px);
+      color: var(--gris);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    /* ── PALABRAS CON ALMA ── */
+    .palabras {
+      background: var(--negro);
+      padding: clamp(140px, 20vh, 280px) clamp(24px, 5vw, 80px);
+      position: relative; overflow: hidden;
+      display: flex; justify-content: center;
+    }
+    .palabras-grain {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03; pointer-events: none;
+    }
+    .palabras-glow {
+      position: absolute; top: -30%; right: -15%;
+      width: 60%; height: 160%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .palabras-inner {
+      max-width: 800px; width: 100%;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .palabras-label {
+      font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25); font-weight: 500;
+      margin-bottom: 48px; opacity: 0;
+    }
+    .palabras-word {
+      font-size: clamp(72px, 14vw, 160px);
+      font-weight: 900; font-style: italic;
+      line-height: 0.85; letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--amarillo), #F97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0; transform: scale(0.9);
+    }
+    .palabras-meaning {
+      font-size: clamp(18px, 2.2vw, 24px);
+      color: rgba(255,255,255,0.5);
+      margin-top: 48px; line-height: 1.7; font-weight: 300;
+      max-width: 540px; margin-left: auto; margin-right: auto;
+      opacity: 0; transform: translateY(20px);
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-section {
+      padding: 40px 0; overflow: hidden;
+      background: var(--negro);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .marquee-track {
+      display: flex; gap: 60px;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 300; font-style: italic;
+      color: rgba(255,255,255,0.15);
+      white-space: nowrap;
+    }
+    .marquee-item .dot {
+      display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rojo);
+      opacity: 0.4;
+      margin: 0 20px;
+      vertical-align: middle;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── LA TERRAZA ── */
+    .terraza {
+      background: linear-gradient(180deg, var(--crema) 0%, var(--arena) 100%);
+      padding: clamp(140px, 20vh, 260px) clamp(24px, 5vw, 80px);
+      display: flex; justify-content: center;
+      position: relative;
+    }
+    .terraza-inner { max-width: 640px; text-align: center; }
+    .terraza-title {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900;
+      color: var(--negro);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      opacity: 0;
+    }
+    .terraza-desc {
+      font-size: clamp(18px, 2vw, 24px);
+      color: var(--gris);
+      margin-top: 32px; line-height: 1.7; font-weight: 400;
+      opacity: 0; transform: translateY(20px);
+    }
+    .terraza-desc em {
+      color: var(--rojo); font-style: italic; font-weight: 600;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      padding: clamp(140px, 20vh, 280px) clamp(24px, 5vw, 80px);
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--blanco); position: relative;
+    }
+    .cta-inner { max-width: 600px; text-align: center; position: relative; z-index: 1; }
+
+    .cta-title {
+      font-size: clamp(56px, 10vw, 120px);
+      font-weight: 900; font-style: italic;
+      color: var(--negro);
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+      opacity: 0;
+    }
+    .cta-desc {
+      font-size: clamp(18px, 2vw, 24px);
+      color: var(--gris);
+      margin-top: 20px; margin-bottom: 48px;
+      line-height: 1.6; font-weight: 400;
+      opacity: 0;
+    }
+    .cta-form {
+      display: flex; max-width: 500px; margin: 0 auto;
+      border-radius: 100px; overflow: hidden;
+      border: 2px solid rgba(0,0,0,0.06);
+      background: var(--blanco);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+      opacity: 0; transform: translateY(20px);
+    }
+    .cta-form:focus-within {
+      border-color: var(--azul);
+      box-shadow: 0 8px 40px rgba(14,165,233,0.12);
+    }
+    .cta-form input {
+      flex: 1; border: none; outline: none;
+      padding: 20px 28px; font-size: 18px;
+      font-family: var(--font); background: transparent;
+      color: var(--negro); min-width: 0;
+    }
+    .cta-form input::placeholder { color: #C4BDB4; }
+    .cta-form button {
+      background: var(--rojo); color: #fff;
+      border: none; border-radius: 100px;
+      padding: 20px 36px; font-size: 17px;
+      font-weight: 700; cursor: pointer;
+      font-family: var(--font); white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin: 6px;
+    }
+    .cta-form button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 20px rgba(225,29,72,0.3);
+    }
+
+    .cta-success {
+      display: none; text-align: center;
+    }
+    .cta-success.show { display: block; }
+    .cta-success h2 {
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 900; color: var(--amarillo);
+      letter-spacing: -0.04em;
+    }
+    .cta-success p {
+      font-size: 20px; color: var(--gris);
+      margin-top: 16px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 60px clamp(24px, 5vw, 80px) 72px;
+      text-align: center;
+      background: var(--negro);
+    }
+    .footer-brand {
+      font-size: 24px; font-weight: 900;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: -0.03em;
+    }
+    .footer-sub {
+      font-size: 14px; color: rgba(255,255,255,0.08);
+      margin-top: 12px; font-weight: 400;
+    }
+    .footer-links {
+      display: flex; gap: 24px; justify-content: center;
+      margin-top: 24px;
+    }
+    .footer-links a {
+      font-size: 13px; color: rgba(255,255,255,0.2);
+      text-decoration: none; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.5); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .pillar { flex-wrap: wrap; transform: translateX(-30px); }
+      .pillar-number { display: none; }
+      .pillar-word { min-width: 100%; margin-bottom: 8px; }
+      .cta-form { flex-direction: column; border-radius: 20px; }
+      .cta-form input { text-align: center; padding: 18px 20px; }
+      .cta-form button { margin: 0 6px 6px; border-radius: 14px; }
+      .nav-cta { font-size: 13px; padding: 8px 18px; }
+    }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- CURSOR GLOW -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- LOADING SCREEN -->
+  <div class="loader" id="loader">
+    <div class="loader-text" id="loaderText">hola<span style="font-weight:400">Spansk</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-brand">hola<span>Spansk</span></a>
+    <a href="#nyhetsbrev" class="nav-cta">¿Vienes? →</a>
+  </nav>
+
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-light" id="heroLight"></div>
-    <svg class="brush brush-top" viewBox="0 0 800 30" preserveAspectRatio="none">
-      <path d="M0,18 C50,6 120,24 200,14 C280,4 360,22 450,12 C540,2 640,20 720,10 C760,6 790,16 800,12" fill="none" stroke="#D4943A" stroke-width="5" stroke-linecap="round"/>
-    </svg>
-    <svg class="brush brush-bottom" viewBox="0 0 800 30" preserveAspectRatio="none">
-      <path d="M0,12 C80,22 160,4 260,16 C360,28 440,6 540,18 C640,28 740,8 800,14" fill="none" stroke="#90C4E8" stroke-width="5" stroke-linecap="round"/>
-    </svg>
-    <div class="hero-logo">
-      <img src="/logo.png" alt="holaSpansk" width="320" height="320" />
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <img src="logo.png" alt="holaSpansk" class="hero-logo" id="heroLogo">
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Kom nærmere</span></span>
+        <span class="line"><span class="line-inner accent">Spania</span></span>
+      </h1>
+      <p class="hero-sub" id="heroSub">Språk, kultur og liv — rett fra hjertet av Spania</p>
     </div>
-    <h1 class="hero-tagline">Kom nærmere Spania</h1>
-    <p class="hero-descriptor">Språk, kultur og liv — rett fra hjertet av Spania</p>
-    <div class="scroll-hint">
-      <div class="scroll-line"></div>
-      <svg width="12" height="8" viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="#1A4570" stroke-width="1.5" fill="none"/></svg>
+    <div class="hero-scroll" id="heroScroll">
+      <div class="hero-scroll-line"></div>
+      <div class="hero-scroll-dot"></div>
     </div>
   </section>
 
-  <!-- MANIFESTO -->
-  <section class="manifesto">
+  <!-- MANIFESTO — Word-by-word scroll reveal -->
+  <section class="manifesto" id="manifesto">
     <div class="manifesto-inner">
-      <p class="manifesto-text">
-        Lukten av appelsinblomst gjennom et åpent vindu.
-        <span class="accent-gold">Lyden av kopper mot marmor i en bar klokka elleve.</span>
-        Det Spania ingen reiseguide kan gi deg —
-        <span class="accent-sea">det lever vi i, hver dag.</span>
-      </p>
-      <svg class="brush-divider" viewBox="0 0 800 30" preserveAspectRatio="none">
-        <path d="M0,18 C50,6 120,24 200,14 C280,4 360,22 450,12 C540,2 640,20 720,10 C760,6 790,16 800,12" fill="none" stroke="#D93251" stroke-width="5" stroke-linecap="round"/>
-      </svg>
+      <p class="manifesto-word" id="manifestoText"></p>
+      <div class="manifesto-divider" id="manifestoDivider"></div>
     </div>
   </section>
 
-  <!-- THREE PILLARS -->
-  <section class="pillars">
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
     <div class="pillars-inner">
-      <div class="pillar pillar-0">
-        <span class="pillar-word" style="color: #D93251">Språk</span>
+      <div class="pillar" data-color="#E11D48">
+        <span class="pillar-number">01</span>
+        <span class="pillar-word" style="color: #E11D48">Språk</span>
         <span class="pillar-desc">Spansk som faktisk brukes — på gata, i baren, mellom venner.</span>
       </div>
-      <div class="pillar pillar-1">
-        <span class="pillar-word" style="color: #D4943A">Kultur</span>
+      <div class="pillar" data-color="#F59E0B">
+        <span class="pillar-number">02</span>
+        <span class="pillar-word" style="color: #F59E0B">Kultur</span>
         <span class="pillar-desc">Skikkene, festene, maten og alt det ingen forteller deg.</span>
       </div>
-      <div class="pillar pillar-2">
-        <span class="pillar-word" style="color: #3878AD">Liv</span>
+      <div class="pillar" data-color="#0EA5E9">
+        <span class="pillar-number">03</span>
+        <span class="pillar-word" style="color: #0EA5E9">Liv</span>
         <span class="pillar-desc">Hvordan det egentlig er å leve i Spania — det vakre og det kaotiske.</span>
       </div>
     </div>
   </section>
 
   <!-- PALABRAS CON ALMA -->
-  <section class="palabras">
+  <section class="palabras" id="palabras">
+    <div class="palabras-grain"></div>
     <div class="palabras-glow"></div>
     <div class="palabras-inner">
-      <p class="palabras-label">Palabras con Alma</p>
-      <p class="palabras-word">sobremesa</p>
-      <p class="palabras-meaning">Den lange stunden etter maten der ingen har lyst til å reise seg. Kaffe, samtale, latter. Tid uten klokke.</p>
+      <p class="palabras-label" id="palabrasLabel">Palabras con Alma</p>
+      <p class="palabras-word" id="palabrasWord">sobremesa</p>
+      <p class="palabras-meaning" id="palabrasMeaning">Den lange stunden etter maten der ingen har lyst til å reise seg. Kaffe, samtale, latter. Tid uten klokke.</p>
     </div>
   </section>
 
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marquee"></div>
+  </div>
+
   <!-- LA TERRAZA -->
-  <section class="terraza">
+  <section class="terraza" id="terraza">
     <div class="terraza-inner">
-      <p class="terraza-title">La Terraza</p>
-      <p class="terraza-desc">Vårt fellesskap av nordmenn som elsker Spania. Et sted der nysgjerrige blir naboer — <em>fra hola til vecino.</em></p>
-      <svg class="brush-divider brush-divider-sm" viewBox="0 0 800 30" preserveAspectRatio="none">
-        <path d="M0,18 C50,6 120,24 200,14 C280,4 360,22 450,12 C540,2 640,20 720,10 C760,6 790,16 800,12" fill="none" stroke="#D4943A" stroke-width="5" stroke-linecap="round"/>
-      </svg>
+      <p class="terraza-title" id="terrazaTitle">La Terraza</p>
+      <p class="terraza-desc" id="terrazaDesc">Vårt fellesskap av nordmenn som elsker Spania. Et sted der nysgjerrige blir naboer — <em>fra hola til vecino.</em></p>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="cta" id="nyhetsbrev">
-    <div class="cta-glow"></div>
     <div class="cta-inner" id="ctaBlock">
-      <p class="cta-title">¿Vienes?</p>
-      <p class="cta-desc">Nyhetsbrevet med et stykke Spania i innboksen din — hver uke.</p>
-      <form class="cta-form" id="ctaForm" onsubmit="return false;">
-        <input type="email" id="emailInput" placeholder="din e-post" required />
-        <button type="submit" id="ctaBtn">Kom nærmere →</button>
+      <p class="cta-title" id="ctaTitle">¿Vienes?</p>
+      <p class="cta-desc" id="ctaDesc">Nyhetsbrevet med et stykke Spania i innboksen din — hver uke.</p>
+      <form class="cta-form" id="ctaForm">
+        <input type="email" id="emailInput" placeholder="din e-post" required>
+        <button type="submit">Kom nærmere</button>
       </form>
     </div>
-    <div class="cta-inner cta-success" id="ctaSuccess">
-      <p class="cta-title" style="color: #D4943A">¡Bienvenido!</p>
-      <p class="cta-desc">Du er nå en del av holaSpansk. Vi sees i innboksen.</p>
+    <div class="cta-success" id="ctaSuccess">
+      <h2>¡Bienvenido!</h2>
+      <p>Du er nå en del av holaSpansk. Vi sees i innboksen.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p class="footer-brand">holaSpansk</p>
-    <p class="footer-sub">Fra Norge, med kjærlighet til Spania</p>
+    <div class="footer-brand">holaSpansk</div>
+    <div class="footer-sub">Fra Norge, med kjærlighet til Spania</div>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">Nyhetsbrev</a>
+    </div>
   </footer>
 
-  <script src="/main.js"></script>
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js"></script>
+
+  <script>
+  (function() {
+    'use strict';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── LOADER ──
+    const loader = document.getElementById('loader');
+    const loaderText = document.getElementById('loaderText');
+    const loaderBar = document.getElementById('loaderBar');
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        gsap.to(loader, {
+          yPercent: -100,
+          duration: 0.8,
+          ease: 'power4.inOut',
+          onComplete: () => { loader.style.display = 'none'; initPage(); }
+        });
+      }
+    });
+    tl.to(loaderText, { opacity: 1, duration: 0.4, ease: 'power2.out' })
+      .to(loaderBar, { width: '100%', duration: 1.2, ease: 'power2.inOut' }, '+=0.2');
+
+    // ── INIT ──
+    function initPage() {
+      initLenis();
+      animateHero();
+      animateNav();
+      animateManifesto();
+      animatePillars();
+      animatePalabras();
+      animateTerraza();
+      animateCTA();
+      initCursorGlow();
+      initMarquee();
+      initForm();
+    }
+
+    // ── LENIS SMOOTH SCROLL ──
+    function initLenis() {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 2,
+      });
+
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    // ── HERO ANIMATION ──
+    function animateHero() {
+      const htl = gsap.timeline({ delay: 0.2 });
+
+      htl.to('#heroLogo', {
+        opacity: 1, scale: 1, duration: 1, ease: 'power3.out',
+        from: { opacity: 0, scale: 0.85 }
+      })
+      .to('.hero-title .line-inner', {
+        y: 0, duration: 1, ease: 'power4.out', stagger: 0.12,
+      }, '-=0.6')
+      .to('#heroSub', {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+      }, '-=0.5')
+      .to('#heroScroll', {
+        opacity: 0.3, duration: 0.6, ease: 'power2.out',
+      }, '-=0.3');
+
+      // Parallax on scroll
+      gsap.to('.hero-content', {
+        yPercent: 30, opacity: 0,
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+    }
+
+    // ── NAV REVEAL ──
+    function animateNav() {
+      ScrollTrigger.create({
+        trigger: '.hero',
+        start: 'bottom 80%',
+        onEnter: () => gsap.to('.nav', { y: 0, duration: 0.6, ease: 'power3.out' }),
+        onLeaveBack: () => gsap.to('.nav', { y: '-100%', duration: 0.4, ease: 'power3.in' }),
+      });
+    }
+
+    // ── MANIFESTO — word-by-word scroll reveal ──
+    function animateManifesto() {
+      const lines = [
+        { text: 'Lukten av appelsinblomst gjennom et åpent vindu.', cls: '' },
+        { text: 'Lyden av kopper mot marmor i en bar klokka elleve.', cls: 'highlight' },
+        { text: 'Det Spania ingen reiseguide kan gi deg —', cls: '' },
+        { text: 'det lever vi i, hver dag.', cls: 'strong' },
+      ];
+
+      const container = document.getElementById('manifestoText');
+      const allWords = [];
+
+      lines.forEach((line, li) => {
+        if (li > 0) container.appendChild(document.createTextNode(' '));
+        line.text.split(' ').forEach((w) => {
+          const span = document.createElement('span');
+          span.className = 'word' + (line.cls ? ' ' + line.cls : '');
+          span.textContent = w + ' ';
+          container.appendChild(span);
+          allWords.push(span);
+        });
+      });
+
+      ScrollTrigger.create({
+        trigger: '.manifesto',
+        start: 'top 80%',
+        end: 'bottom 30%',
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          allWords.forEach((w, i) => {
+            const threshold = i / allWords.length;
+            w.classList.toggle('active', progress > threshold);
+          });
+        },
+      });
+
+      gsap.to('#manifestoDivider', {
+        opacity: 1, width: 60,
+        scrollTrigger: {
+          trigger: '#manifestoDivider',
+          start: 'top 85%',
+          duration: 0.8,
+        }
+      });
+    }
+
+    // ── PILLARS ──
+    function animatePillars() {
+      gsap.utils.toArray('.pillar').forEach((pillar, i) => {
+        gsap.to(pillar, {
+          opacity: 1, x: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: pillar,
+            start: 'top 80%',
+          }
+        });
+      });
+    }
+
+    // ── PALABRAS CON ALMA ──
+    function animatePalabras() {
+      const ptl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.palabras',
+          start: 'top 60%',
+        }
+      });
+
+      ptl.to('#palabrasLabel', { opacity: 1, duration: 0.5 })
+        .to('#palabrasWord', { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, '-=0.2')
+        .to('#palabrasMeaning', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5');
+    }
+
+    // ── MARQUEE ──
+    function initMarquee() {
+      const words = ['duende', 'sobremesa', 'madrugada', 'tertulia', 'morriña', 'chiringuito', 'siesta', 'merienda', 'paseo', 'chapuzón'];
+      const track = document.getElementById('marquee');
+      // Duplicate for seamless loop
+      for (let r = 0; r < 2; r++) {
+        words.forEach(w => {
+          const span = document.createElement('span');
+          span.className = 'marquee-item';
+          span.innerHTML = w + '<span class="dot"></span>';
+          track.appendChild(span);
+        });
+      }
+    }
+
+    // ── LA TERRAZA ──
+    function animateTerraza() {
+      const ttl = gsap.timeline({
+        scrollTrigger: { trigger: '.terraza', start: 'top 65%' }
+      });
+
+      ttl.to('#terrazaTitle', {
+        opacity: 1, duration: 0.8, ease: 'power3.out',
+      })
+      .to('#terrazaDesc', {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+      }, '-=0.4');
+    }
+
+    // ── CTA ──
+    function animateCTA() {
+      const ctl = gsap.timeline({
+        scrollTrigger: { trigger: '.cta', start: 'top 65%' }
+      });
+
+      ctl.to('#ctaTitle', { opacity: 1, duration: 0.8, ease: 'power3.out' })
+        .to('#ctaDesc', { opacity: 1, duration: 0.6 }, '-=0.4')
+        .to('.cta-form', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3');
+    }
+
+    // ── CURSOR GLOW ──
+    function initCursorGlow() {
+      const glow = document.getElementById('cursorGlow');
+      if (window.matchMedia('(pointer: fine)').matches) {
+        document.addEventListener('mousemove', (e) => {
+          gsap.to(glow, {
+            x: e.clientX, y: e.clientY,
+            duration: 0.8, ease: 'power2.out',
+          });
+        });
+      } else {
+        glow.style.display = 'none';
+      }
+    }
+
+    // ── FORM ──
+    function initForm() {
+      const form = document.getElementById('ctaForm');
+      const block = document.getElementById('ctaBlock');
+      const success = document.getElementById('ctaSuccess');
+      const input = document.getElementById('emailInput');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const v = input.value.trim();
+        if (v && v.includes('@') && v.includes('.')) {
+          block.style.display = 'none';
+          success.classList.add('show');
+          gsap.from(success, { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' });
+        } else {
+          gsap.to(input, {
+            x: [-8, 8, -6, 6, 0], duration: 0.4,
+            borderColor: '#E11D48',
+          });
+        }
+      });
+    }
+
+  })();
+  </script>
+
 </body>
 </html>
