@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>holaSpansk — Kom nærmere Spania</title>
-  <meta name="description" content="Kultur, liv og språk fra Spania — fortalt innenfra. For nordmenn som vil mer enn ferie.">
-  <meta property="og:title" content="holaSpansk — Kom nærmere Spania">
-  <meta property="og:description" content="Kultur, liv og språk fra Spania — fortalt innenfra.">
+  <title>holaSpansk | Kom nærmere Spania</title>
+  <meta name="description" content="Spania fortalt innenfra. Kultur, liv og språk, for nordmenn som vil mer enn å være turist.">
+  <meta property="og:title" content="holaSpansk | Kom nærmere Spania">
+  <meta property="og:description" content="Spania fortalt innenfra. For deg som vil mer enn å være turist.">
   <meta property="og:image" content="/logo.png">
   <meta property="og:type" content="website">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
   <style>
     /* ══════════════════════════════════════════════
@@ -20,9 +20,14 @@
        ══════════════════════════════════════════════ */
     :root {
       --rojo: #E11D48;
+      --rojo-oscuro: #BE123C;
       --amarillo: #F59E0B;
+      --naranja: #EA580C;
       --azul: #0EA5E9;
+      --azul-cobalto: #1E3A8A;
+      --arena: #F5F0E8;
       --font: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
       --transition-theme: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -31,6 +36,7 @@
       --bg-secondary: #FFFFFF;
       --bg-tertiary: #FEF7EC;
       --bg-dark: #1F2937;
+      --manifesto-bg: #F5F0E8;
       --text-primary: #1F2937;
       --text-secondary: #6B7280;
       --text-muted: #9CA3AF;
@@ -45,17 +51,18 @@
       --form-border: rgba(0,0,0,0.06);
       --form-bg: #FFFFFF;
       --form-placeholder: #C4BDB4;
-      --glow-warm: rgba(245,158,11,0.07);
-      --glow-cool: rgba(14,165,233,0.05);
-      --glow-rose: rgba(225,29,72,0.04);
-      --cursor-glow: rgba(245,158,11,0.06);
-      --hero-gradient: linear-gradient(175deg, #FFFBF5 0%, #FEF7EC 50%, #F0F7FC 100%);
+      --glow-warm: rgba(245,158,11,0.12);
+      --glow-cool: rgba(14,165,233,0.07);
+      --glow-rose: rgba(234,88,12,0.06);
+      --glow-cobalto: rgba(30,58,138,0.05);
+      --cursor-glow: rgba(245,158,11,0.08);
+      --hero-gradient: linear-gradient(175deg, #FFFBF5 0%, #FEF2DC 45%, #F0F6FC 100%);
       --shadow-soft: rgba(0,0,0,0.06);
       --shadow-form: rgba(0,0,0,0.04);
-      --footer-brand: rgba(255,255,255,0.15);
-      --footer-sub: rgba(255,255,255,0.08);
-      --footer-link: rgba(255,255,255,0.2);
-      --footer-link-hover: rgba(255,255,255,0.5);
+      --footer-brand: rgba(255,255,255,0.18);
+      --footer-sub: rgba(255,255,255,0.55);
+      --footer-link: rgba(255,255,255,0.4);
+      --footer-link-hover: rgba(255,255,255,0.9);
       --marquee-border: rgba(255,255,255,0.05);
       --grain-opacity: 0.03;
       --palabras-glow: rgba(245,158,11,0.06);
@@ -66,6 +73,7 @@
       --bg-secondary: #161922;
       --bg-tertiary: #1A1D2B;
       --bg-dark: #0A0C12;
+      --manifesto-bg: #14171F;
       --text-primary: #F1F3F9;
       --text-secondary: #8B92A8;
       --text-muted: #5C6378;
@@ -80,17 +88,18 @@
       --form-border: rgba(255,255,255,0.08);
       --form-bg: #1A1D2B;
       --form-placeholder: #4A5068;
-      --glow-warm: rgba(245,158,11,0.04);
-      --glow-cool: rgba(14,165,233,0.03);
-      --glow-rose: rgba(225,29,72,0.03);
-      --cursor-glow: rgba(245,158,11,0.04);
+      --glow-warm: rgba(245,158,11,0.07);
+      --glow-cool: rgba(14,165,233,0.05);
+      --glow-rose: rgba(234,88,12,0.04);
+      --glow-cobalto: rgba(30,58,138,0.08);
+      --cursor-glow: rgba(245,158,11,0.05);
       --hero-gradient: linear-gradient(175deg, #0F1117 0%, #131620 50%, #101424 100%);
       --shadow-soft: rgba(0,0,0,0.3);
       --shadow-form: rgba(0,0,0,0.2);
-      --footer-brand: rgba(255,255,255,0.1);
-      --footer-sub: rgba(255,255,255,0.05);
-      --footer-link: rgba(255,255,255,0.15);
-      --footer-link-hover: rgba(255,255,255,0.4);
+      --footer-brand: rgba(255,255,255,0.15);
+      --footer-sub: rgba(255,255,255,0.5);
+      --footer-link: rgba(255,255,255,0.35);
+      --footer-link-hover: rgba(255,255,255,0.85);
       --marquee-border: rgba(255,255,255,0.03);
       --grain-opacity: 0.04;
       --palabras-glow: rgba(245,158,11,0.04);
@@ -252,9 +261,10 @@
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 50% 30%, var(--glow-warm) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 60% at 80% 80%, var(--glow-cool) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 15% 70%, var(--glow-rose) 0%, transparent 50%),
+        radial-gradient(ellipse 90% 55% at 60% 25%, var(--glow-warm) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 82% 82%, var(--glow-cool) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 12% 72%, var(--glow-rose) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 40% at 50% 100%, var(--glow-cobalto) 0%, transparent 65%),
         var(--hero-gradient);
       transition: background var(--transition-theme);
     }
@@ -321,17 +331,19 @@
     .manifesto {
       padding: clamp(120px, 18vh, 240px) clamp(24px, 5vw, 80px);
       display: flex; justify-content: center;
-      background: var(--bg-secondary);
+      background: var(--manifesto-bg);
       position: relative;
       transition: background var(--transition-theme);
     }
-    .manifesto-inner { max-width: 800px; }
+    .manifesto-inner { max-width: 820px; }
     .manifesto-word {
-      font-size: clamp(28px, 4vw, 52px);
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4.4vw, 56px);
       font-weight: 400;
-      line-height: 1.45;
+      font-style: italic;
+      line-height: 1.4;
       color: var(--text-primary);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       transition: color var(--transition-theme);
     }
     .manifesto-word .word {
@@ -340,8 +352,8 @@
       transition: opacity 0.4s;
     }
     .manifesto-word .word.active { opacity: 1; }
-    .manifesto-word .highlight { color: var(--amarillo); font-weight: 600; }
-    .manifesto-word .strong { color: var(--rojo); font-weight: 700; }
+    .manifesto-word .highlight { color: var(--naranja); font-weight: 500; font-style: italic; }
+    .manifesto-word .strong { color: var(--rojo); font-weight: 700; font-style: italic; }
 
     .manifesto-divider {
       width: 60px; height: 3px; border-radius: 2px;
@@ -370,11 +382,13 @@
     .pillar:last-child { border-bottom: none; }
 
     .pillar-number {
-      font-size: 14px; font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 500; font-style: italic;
+      color: var(--naranja);
+      letter-spacing: 0.05em;
       flex-shrink: 0;
-      min-width: 36px;
+      min-width: 42px;
+      opacity: 0.75;
       transition: color var(--transition-theme);
     }
 
@@ -428,22 +442,24 @@
       margin-bottom: 48px; opacity: 0;
     }
     .palabras-word {
-      font-size: clamp(56px, 11vw, 140px);
-      font-weight: 900; font-style: italic;
-      line-height: 1.05; letter-spacing: -0.04em;
-      background: linear-gradient(135deg, var(--amarillo), #F97316);
+      font-family: var(--font-serif);
+      font-size: clamp(60px, 12vw, 152px);
+      font-weight: 700; font-style: italic;
+      line-height: 1.05; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #FCD34D 0%, var(--amarillo) 35%, var(--naranja) 70%, #C2410C 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
       opacity: 0; transform: scale(0.9);
-      padding: 0.1em 0;
+      padding: 0.15em 0;
       word-break: break-word;
       overflow-wrap: break-word;
     }
     .palabras-meaning {
-      font-size: clamp(18px, 2.2vw, 24px);
+      font-family: var(--font-serif);
+      font-size: clamp(19px, 2.3vw, 26px);
       color: var(--text-on-dark-muted);
-      margin-top: 48px; line-height: 1.7; font-weight: 300;
-      max-width: 540px; margin-left: auto; margin-right: auto;
+      margin-top: 48px; line-height: 1.65; font-weight: 400; font-style: italic;
+      max-width: 580px; margin-left: auto; margin-right: auto;
       opacity: 0; transform: translateY(20px);
     }
 
@@ -489,11 +505,13 @@
     }
     .terraza-inner { max-width: 640px; text-align: center; }
     .terraza-title {
-      font-size: clamp(48px, 8vw, 96px);
-      font-weight: 900;
+      font-family: var(--font-serif);
+      font-size: clamp(52px, 8.5vw, 104px);
+      font-weight: 700;
+      font-style: italic;
       color: var(--text-primary);
-      line-height: 0.95;
-      letter-spacing: -0.05em;
+      line-height: 1;
+      letter-spacing: -0.03em;
       opacity: 0;
       transition: color var(--transition-theme);
     }
@@ -574,9 +592,12 @@
     }
     .cta-success.show { display: block; }
     .cta-success h2 {
-      font-size: clamp(48px, 8vw, 80px);
-      font-weight: 900; color: var(--amarillo);
-      letter-spacing: -0.04em;
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 8vw, 84px);
+      font-weight: 700; font-style: italic;
+      color: var(--naranja);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
     }
     .cta-success p {
       font-size: 20px; color: var(--text-secondary);
@@ -598,8 +619,11 @@
     .footer-brand .hola { color: var(--amarillo); opacity: 0.4; }
     .footer-brand .spansk { color: var(--rojo); opacity: 0.4; }
     .footer-sub {
-      font-size: 14px; color: var(--footer-sub);
-      margin-top: 12px; font-weight: 400;
+      font-family: var(--font-serif);
+      font-size: 15px; font-style: italic;
+      color: var(--footer-sub);
+      margin-top: 14px; font-weight: 400;
+      letter-spacing: 0.01em;
     }
     .footer-links {
       display: flex; gap: 24px; justify-content: center;
@@ -681,7 +705,7 @@
         <span class="line"><span class="line-inner">Kom nærmere</span></span>
         <span class="line"><span class="line-inner accent">Spania</span></span>
       </h1>
-      <p class="hero-sub" id="heroSub">Kultur, liv og språk — rett fra hjertet av Spania</p>
+      <p class="hero-sub" id="heroSub">Spania fortalt innenfra. For deg som vil mer enn å være turist.</p>
     </div>
     <div class="hero-scroll" id="heroScroll">
       <div class="hero-scroll-line"></div>
@@ -701,19 +725,19 @@
   <section class="pillars" id="pillars">
     <div class="pillars-inner">
       <div class="pillar" data-color="#F59E0B">
-        <span class="pillar-number">01</span>
+        <span class="pillar-number">i.</span>
         <span class="pillar-word" style="color: #F59E0B">Kultur</span>
         <span class="pillar-desc">Skikkene, festene, maten og alt det ingen forteller deg.</span>
       </div>
       <div class="pillar" data-color="#0EA5E9">
-        <span class="pillar-number">02</span>
+        <span class="pillar-number">ii.</span>
         <span class="pillar-word" style="color: #0EA5E9">Liv</span>
-        <span class="pillar-desc">Hvordan det egentlig er å leve i Spania — det vakre og det kaotiske.</span>
+        <span class="pillar-desc">Hvordan det egentlig er å leve i Spania. Det vakre og det kaotiske.</span>
       </div>
       <div class="pillar" data-color="#E11D48">
-        <span class="pillar-number">03</span>
+        <span class="pillar-number">iii.</span>
         <span class="pillar-word" style="color: #E11D48">Språk</span>
-        <span class="pillar-desc">Spansk som faktisk brukes — på gata, i baren, mellom venner.</span>
+        <span class="pillar-desc">Spansk som faktisk brukes. På gata, i baren, mellom venner.</span>
       </div>
     </div>
   </section>
@@ -725,7 +749,7 @@
     <div class="palabras-inner">
       <p class="palabras-label" id="palabrasLabel">Palabras con Alma</p>
       <p class="palabras-word" id="palabrasWord">sobremesa</p>
-      <p class="palabras-meaning" id="palabrasMeaning">Den lange stunden etter maten der ingen har lyst til å reise seg. Kaffe, samtale, latter. Tid uten klokke.</p>
+      <p class="palabras-meaning" id="palabrasMeaning">Den lange stunden etter maten der ingen reiser seg. Kaffe, en historie til, solen som flytter seg langsomt over bordet. Tid uten klokke.</p>
     </div>
   </section>
 
@@ -738,7 +762,7 @@
   <section class="terraza" id="terraza">
     <div class="terraza-inner">
       <p class="terraza-title" id="terrazaTitle">La Terraza</p>
-      <p class="terraza-desc" id="terrazaDesc">Vårt fellesskap av nordmenn som elsker Spania. Et sted der nysgjerrige blir naboer — <em>fra hola til vecino.</em></p>
+      <p class="terraza-desc" id="terrazaDesc">Et fellesskap av nordmenn som elsker Spania. Stedet der nysgjerrige blir naboer. <em>Fra hola til vecino.</em></p>
     </div>
   </section>
 
@@ -746,26 +770,26 @@
   <section class="cta" id="nyhetsbrev">
     <div class="cta-inner" id="ctaBlock">
       <p class="cta-title" id="ctaTitle">¿Vienes?</p>
-      <p class="cta-desc" id="ctaDesc">Nyhetsbrevet med et stykke Spania i innboksen din — hver uke.</p>
+      <p class="cta-desc" id="ctaDesc">Et brev fra terrassen, hver uke. Historier, ord og smaker du ikke finner i en reiseguide.</p>
       <form class="cta-form" id="ctaForm">
         <input type="email" id="emailInput" placeholder="din e-post" required>
         <button type="submit">Kom nærmere</button>
       </form>
     </div>
     <div class="cta-success" id="ctaSuccess">
-      <h2>¡Bienvenido!</h2>
-      <p>Du er nå en del av <span style="color:var(--amarillo);font-weight:700">hola</span><span style="color:var(--rojo);font-weight:700">Spansk</span>. Vi sees i innboksen.</p>
+      <h2>¡Bienvenido a la terraza!</h2>
+      <p>Stolen ved siden av er din. Vi sees i innboksen, med kaffe og en god historie.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-brand"><span class="hola">hola</span><span class="spansk">Spansk</span></div>
-    <div class="footer-sub">Fra Norge, med kjærlighet til Spania</div>
+    <div class="footer-sub">Skrevet mellom Norge og Spania, med hjerte i begge.</div>
     <div class="footer-links">
-      <a href="#">Instagram</a>
-      <a href="#">TikTok</a>
-      <a href="#">Nyhetsbrev</a>
+      <a href="https://instagram.com/holaspansk" target="_blank">Instagram</a>
+      <a href="https://tiktok.com/@holaspansk" target="_blank">TikTok</a>
+      <a href="https://holaspansk.substack.com" target="_blank">Nyhetsbrev</a>
     </div>
   </footer>
 
@@ -907,8 +931,8 @@
       const lines = [
         { text: 'Lukten av appelsinblomst gjennom et åpent vindu.', cls: '' },
         { text: 'Lyden av kopper mot marmor i en bar klokka elleve.', cls: 'highlight' },
-        { text: 'Det Spania ingen reiseguide kan gi deg —', cls: '' },
-        { text: 'det lever vi i, hver dag.', cls: 'strong' },
+        { text: 'Det Spania ingen reiseguide kan gi deg.', cls: '' },
+        { text: 'Det lever vi i, hver dag.', cls: 'strong' },
       ];
 
       const container = document.getElementById('manifestoText');
@@ -1036,14 +1060,15 @@
     // ── FORM ──
     function initForm() {
       const form = document.getElementById('ctaForm');
+      const input = document.getElementById('emailInput');
       const block = document.getElementById('ctaBlock');
       const success = document.getElementById('ctaSuccess');
-      const input = document.getElementById('emailInput');
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const v = input.value.trim();
         if (v && v.includes('@') && v.includes('.')) {
+          window.open('https://holaspansk.substack.com/subscribe?email=' + encodeURIComponent(v), '_blank');
           block.style.display = 'none';
           success.classList.add('show');
           gsap.from(success, { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' });
