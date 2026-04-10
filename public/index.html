@@ -268,6 +268,85 @@
         var(--hero-gradient);
       transition: background var(--transition-theme);
     }
+    .hero-bg-img {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://files.catbox.moe/2fpjmb.jpg');
+      background-size: cover;
+      background-position: center 35%;
+      opacity: 0;
+      transform: scale(1.08);
+      will-change: transform, opacity;
+    }
+    .hero-bg-veil {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg,
+        rgba(255,251,245,0.25) 0%,
+        rgba(255,251,245,0.05) 40%,
+        rgba(255,251,245,0.65) 100%);
+      pointer-events: none;
+      transition: background var(--transition-theme);
+    }
+    [data-theme="dark"] .hero-bg-veil {
+      background: linear-gradient(180deg,
+        rgba(15,17,23,0.45) 0%,
+        rgba(15,17,23,0.2) 40%,
+        rgba(15,17,23,0.82) 100%);
+    }
+    .hero-content { z-index: 2 !important; }
+    [data-theme="light"] .hero-title { text-shadow: 0 2px 40px rgba(255,251,245,0.7); }
+    [data-theme="dark"] .hero-title { text-shadow: 0 2px 40px rgba(0,0,0,0.5); }
+
+    /* ── IMAGE REVEAL (Apple-style scroll) ── */
+    .image-reveal {
+      position: relative;
+      width: 100%;
+      padding: clamp(60px, 10vh, 140px) clamp(24px, 5vw, 80px);
+      background: var(--bg-primary);
+      transition: background var(--transition-theme);
+      overflow: hidden;
+    }
+    .image-reveal-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .image-reveal-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: clamp(16px, 2vw, 28px);
+      overflow: hidden;
+      box-shadow:
+        0 40px 100px -40px rgba(0,0,0,0.35),
+        0 20px 60px -30px rgba(0,0,0,0.2);
+      will-change: transform;
+    }
+    .image-reveal-img {
+      position: absolute;
+      inset: -6%;
+      background-image: url('https://files.catbox.moe/mpu0o1.jpg');
+      background-size: cover;
+      background-position: center center;
+      transform: scale(1.18);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .image-reveal-caption {
+      position: absolute;
+      bottom: clamp(20px, 3vw, 40px);
+      left: clamp(20px, 3vw, 40px);
+      right: clamp(20px, 3vw, 40px);
+      font-family: var(--font-serif);
+      font-size: clamp(15px, 1.5vw, 22px);
+      font-style: italic;
+      color: #fffbee;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.7);
+      opacity: 0;
+      transform: translateY(20px);
+      z-index: 2;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
 
     .hero-content { position: relative; z-index: 1; text-align: center; }
 
@@ -699,6 +778,8 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-bg"></div>
+    <div class="hero-bg-img" id="heroBgImg"></div>
+    <div class="hero-bg-veil"></div>
     <div class="hero-content">
       <img src="logo.png" alt="holaSpansk" class="hero-logo" id="heroLogo">
       <h1 class="hero-title">
@@ -718,6 +799,16 @@
     <div class="manifesto-inner">
       <p class="manifesto-word" id="manifestoText"></p>
       <div class="manifesto-divider" id="manifestoDivider"></div>
+    </div>
+  </section>
+
+  <!-- IMAGE REVEAL — Sobremesa -->
+  <section class="image-reveal" id="imageReveal">
+    <div class="image-reveal-inner">
+      <div class="image-reveal-frame">
+        <div class="image-reveal-img" id="imageRevealImg"></div>
+        <p class="image-reveal-caption" id="imageRevealCaption">Å leve læres ikke i en bok. Det leves. Sakte.</p>
+      </div>
     </div>
   </section>
 
@@ -862,6 +953,8 @@
     function initPage() {
       initLenis();
       animateHero();
+      animateHeroBgImage();
+      animateImageReveal();
       animateNav();
       animateManifesto();
       animatePillars();
@@ -871,6 +964,63 @@
       initCursorGlow();
       initMarquee();
       initForm();
+    }
+
+    // ── HERO BG IMAGE — Apple-style reveal + parallax ──
+    function animateHeroBgImage() {
+      gsap.to('#heroBgImg', {
+        opacity: 1,
+        scale: 1.0,
+        duration: 2.6,
+        ease: 'power3.out',
+        delay: 0.2,
+      });
+      gsap.to('#heroBgImg', {
+        yPercent: 20,
+        scale: 1.1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.2,
+        }
+      });
+    }
+
+    // ── IMAGE REVEAL — scroll-driven scale + fade ──
+    function animateImageReveal() {
+      gsap.to('#imageRevealImg', {
+        opacity: 1,
+        scale: 1.0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#imageReveal',
+          start: 'top 92%',
+          end: 'bottom 15%',
+          scrub: 1.4,
+        }
+      });
+      gsap.to('#imageRevealImg', {
+        yPercent: -10,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#imageReveal',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.4,
+        }
+      });
+      gsap.to('#imageRevealCaption', {
+        opacity: 1,
+        y: 0,
+        duration: 1.0,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#imageReveal',
+          start: 'top 60%',
+        }
+      });
     }
 
     // ── LENIS SMOOTH SCROLL ──
