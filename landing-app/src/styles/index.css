@@ -1,0 +1,71 @@
+/* ============================================================
+   holaSpansk — global stylesheet
+   Imports the design tokens, then the page-level rules ported
+   from the landing-v2 prototype.
+   ============================================================ */
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/effects.css';
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-page);
+  transition: background var(--dur-theme) var(--ease-out), color var(--dur-theme) var(--ease-out);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ---- Fixed nav ---- */
+nav.top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px clamp(20px, 5vw, 64px);
+  backdrop-filter: var(--blur-glass); background: var(--nav-bg);
+  border-bottom: 1px solid var(--border-form);
+  transition: background var(--dur-theme) var(--ease-out), transform var(--dur-base) var(--ease-soft);
+}
+nav.top .brand { display: flex; align-items: center; gap: 11px; }
+nav.top .brand img { width: 38px; height: 38px; border-radius: 9px; box-shadow: var(--shadow-soft); display: block; }
+nav.top .brand .word { font-size: 20px; font-weight: 900; letter-spacing: -0.03em; }
+nav.top .brand .word .h { color: var(--hs-amarillo); }
+nav.top .brand .word .s { color: var(--hs-rojo); }
+nav.top .links { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 38px); }
+nav.top .links .navlink { font-size: 14px; font-weight: 500; color: var(--text-secondary); transition: color var(--dur-fast) var(--ease-out); }
+nav.top .links .navlink:hover { color: var(--text-primary); }
+@media (max-width: 760px) { nav.top .links .navlink { display: none; } }
+
+.themebtn {
+  height: 40px; padding: 0 16px; border-radius: 100px;
+  border: 1.5px solid var(--border-form); background: transparent;
+  cursor: pointer; font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+  color: var(--text-primary); display: flex; align-items: center; gap: 8px;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.themebtn:hover { border-color: var(--hs-amarillo); }
+
+/* ---- Scroll reveal ---- */
+[data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease-soft), transform .8s var(--ease-soft); }
+[data-reveal].in { opacity: 1; transform: none; }
+[data-reveal-delay="1"] { transition-delay: .12s; }
+[data-reveal-delay="2"] { transition-delay: .24s; }
+[data-reveal-delay="3"] { transition-delay: .36s; }
+
+/* word-by-word manifesto */
+.word-rev { display: inline-block; opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-soft), transform .6s var(--ease-soft); }
+.word-rev.in { opacity: 1; transform: none; }
+
+/* marquee */
+@keyframes hs-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { display: flex; width: max-content; animation: hs-marquee 38s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal], .word-rev { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .marquee-track { animation: none !important; }
+}

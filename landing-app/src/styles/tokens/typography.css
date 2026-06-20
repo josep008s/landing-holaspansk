@@ -1,0 +1,47 @@
+/* ============================================================
+   holaSpansk — Typography tokens
+   Fraunces       = display, titulares, Palabras con Alma, citas (el alma).
+   Hanken Grotesk = cuerpo, captions, CTAs, datos (la claridad noruega).
+   ============================================================ */
+:root {
+  --font-serif: 'Fraunces', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Display — Fraunces, big sun-warm headlines */
+  --type-display-1: 900 clamp(48px, 8vw, 100px)/0.95 var(--font-serif);
+  --type-display-2: 700 clamp(40px, 6vw, 72px)/1.0 var(--font-serif);
+  --type-palabra: 700 clamp(60px, 12vw, 152px)/1.05 var(--font-serif); /* Palabras con Alma hero word */
+
+  /* Headings */
+  --type-h1: 900 clamp(36px, 5vw, 56px)/1.05 var(--font-sans);
+  --type-h2: 700 clamp(28px, 3.4vw, 40px)/1.1 var(--font-sans);
+  --type-h3: 600 clamp(20px, 2vw, 26px)/1.2 var(--font-sans);
+
+  /* Quote / poetic — Fraunces italic, "se queda en la terraza" */
+  --type-quote: italic 400 clamp(24px, 3.2vw, 40px)/1.4 var(--font-serif);
+
+  /* Body — Hanken Grotesk */
+  --type-body-lg: 400 clamp(18px, 2vw, 22px)/1.6 var(--font-sans);
+  --type-body: 400 16px/1.6 var(--font-sans);
+  --type-body-sm: 400 14px/1.55 var(--font-sans);
+
+  /* Caption / data / label — Hanken Grotesk, often uppercase tracked */
+  --type-caption: 500 13px/1.4 var(--font-sans);
+  --type-label: 500 13px/1.4 var(--font-sans);
+  --type-overline: 500 13px/1.4 var(--font-sans);
+
+  /* Letter-spacing */
+  --tracking-tight: -0.05em;   /* big display */
+  --tracking-snug: -0.03em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-overline: 0.3em;  /* uppercase labels (PALABRAS CON ALMA) */
+
+  /* Weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+}

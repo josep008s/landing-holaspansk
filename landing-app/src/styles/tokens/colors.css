@@ -1,0 +1,73 @@
+/* ============================================================
+   holaSpansk — Color tokens
+   Regla de luz (innegociable): sol cálido dorado + sombra
+   SIEMPRE violeta-azul, NUNCA gris. Clave alta.
+   ============================================================ */
+:root {
+  /* ---- NÚCLEO (the loud, recognisable trio) ---- */
+  --hs-rojo: #E11D48;          /* Rojo Pasión / Geranio — primary brand */
+  --hs-rojo-oscuro: #BE123C;   /* hover / pressed red */
+  --hs-amarillo: #F59E0B;      /* Amarillo Sol — sunlight, logo wordmark */
+  --hs-naranja: #EA580C;       /* warm accent between rojo & amarillo */
+  --hs-azul: #0EA5E9;          /* Azul Mediterráneo — the sea / cool accent */
+
+  /* ---- MUNDO PINTADO (the oil-painting world) ---- */
+  --hs-buganvilla: #C42A6B;    /* firma — signature bougainvillea pink */
+  --hs-violeta-parra: #8E3A86; /* grapevine violet */
+  --hs-cal: #F6ECDC;           /* Cal al sol — whitewashed wall in sun */
+  --hs-sombra: #A7A6C8;        /* Sombra violeta — the shadow, NEVER grey */
+  --hs-terracota: #C2703F;     /* terracotta, ceramics, clay */
+  --hs-mar-profundo: #1B7E96;  /* deep Mediterranean */
+  --hs-verde-parra: #5C8A4A;   /* grapevine leaf green */
+  --hs-melocoton: #F4A86E;     /* Cielo melocotón — peach sky */
+  --hs-cobalto: #1E3A8A;       /* azulejo cobalt (tilework, logo border) */
+
+  /* ---- NEUTRO / TEXTO ---- */
+  --hs-tinta: #1F2937;         /* Tinta — ink, primary text */
+  --hs-lino: #F2EDE2;          /* Lino — linen, the calm canvas */
+  --hs-arena: #F5F0E8;         /* arena — warm sand surface */
+  --hs-blanco: #FFFBF5;        /* warm off-white page */
+
+  /* ---- SEMANTIC ALIASES — light (default) ---- */
+  --surface-page: var(--hs-blanco);
+  --surface-card: #FFFFFF;
+  --surface-raised: #FEF7EC;
+  --surface-sand: var(--hs-arena);
+  --surface-ink: var(--hs-tinta);       /* dark sections */
+
+  --text-primary: var(--hs-tinta);
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --text-on-ink: #FFFFFF;
+  --text-on-ink-soft: rgba(255,255,255,0.5);
+
+  --brand-primary: var(--hs-rojo);
+  --brand-primary-hover: var(--hs-rojo-oscuro);
+  --brand-sun: var(--hs-amarillo);
+  --brand-sea: var(--hs-azul);
+  --brand-firma: var(--hs-buganvilla);
+
+  --border-subtle: rgba(245,158,11,0.14);
+  --border-form: rgba(0,0,0,0.08);
+
+  /* the signature warm-sun → violet-shadow gradient (never grey) */
+  --grad-luz: linear-gradient(135deg, #FCD34D 0%, var(--hs-amarillo) 35%, var(--hs-naranja) 70%, #C2410C 100%);
+  --grad-divider: linear-gradient(90deg, var(--hs-rojo), var(--hs-amarillo));
+  --grad-mar: linear-gradient(180deg, var(--hs-azul) 0%, var(--hs-mar-profundo) 100%);
+}
+
+/* ---- DARK ("Nattmodus") ---- */
+[data-theme="dark"] {
+  --surface-page: #0F1117;
+  --surface-card: #161922;
+  --surface-raised: #1A1D2B;
+  --surface-sand: #14171F;
+  --surface-ink: #0A0C12;
+
+  --text-primary: #F1F3F9;
+  --text-secondary: #8B92A8;
+  --text-muted: #5C6378;
+
+  --border-subtle: rgba(245,158,11,0.10);
+  --border-form: rgba(255,255,255,0.10);
+}
