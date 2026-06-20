@@ -1,0 +1,65 @@
+<!-- @dsCard group="Landing" viewport="1280x760" name="holaSpansk landing" -->
+<!-- @startingPoint section="Landing" subtitle="Full holaSpansk landing page — hero, manifesto, pillars, Palabras con Alma, CTA" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="nb" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>holaSpansk — Kom nærmere Spania</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font-sans); color: var(--text-primary); background: var(--surface-page);
+    transition: background var(--dur-theme) var(--ease-out), color var(--dur-theme) var(--ease-out); }
+  a { color: inherit; }
+  nav.top { position: fixed; top:0; left:0; right:0; z-index:30; display:flex; align-items:center; justify-content:space-between;
+    padding: 18px clamp(24px,5vw,64px); backdrop-filter: blur(20px) saturate(180%); background: var(--nav-bg);
+    border-bottom: 1px solid var(--border-form); }
+  nav.top .brand { font-size:20px; font-weight:900; letter-spacing:-0.03em; text-decoration:none; }
+  nav.top .brand .h { color: var(--hs-amarillo); } nav.top .brand .s { color: var(--hs-rojo); }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#" class="brand"><span class="h">hola</span><span class="s">Spansk</span></a>
+  <a id="navCta"></a>
+</nav>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="Manifesto.jsx"></script>
+<script type="text/babel" src="Story.jsx"></script>
+<script type="text/babel" src="CTA.jsx"></script>
+<script type="text/babel">
+  const { Button } = window.HolaSpanskDesignSystem_9649fd;
+  function App() {
+    const [theme, setTheme] = React.useState('light');
+    React.useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
+    const toggle = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
+    return (
+      <React.Fragment>
+        <Hero onTheme={toggle} theme={theme} />
+        <Manifesto />
+        <ImageReveal />
+        <Pillars />
+        <Palabras />
+        <Terraza />
+        <CTASection />
+        <Footer />
+      </React.Fragment>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+  // nav CTA via DS Button (mounted into the static nav)
+  ReactDOM.createRoot(document.getElementById('navCta')).render(
+    <Button as="a" href="#" variant="primary" size="sm" arrow>¿Vienes?</Button>
+  );
+</script>
+</body>
+</html>

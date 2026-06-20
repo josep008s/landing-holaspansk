@@ -1,0 +1,36 @@
+/* ============================================================
+   holaSpansk — Effects: radii, shadows, blur, motion
+   Soft, warm, never harsh. Pill CTAs, generously rounded frames.
+   ============================================================ */
+:root {
+  /* Corner radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;       /* image frames */
+  --radius-pill: 100px;    /* buttons, chips, nav CTA */
+
+  /* Shadows — warm, soft, never a hard grey box */
+  --shadow-soft: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-raised: 0 8px 32px rgba(0,0,0,0.08);
+  --shadow-frame: 0 40px 100px -40px rgba(0,0,0,0.35), 0 20px 60px -30px rgba(0,0,0,0.2);
+  --shadow-cta: 0 4px 20px rgba(225,29,72,0.30);   /* rojo glow on CTA hover */
+
+  /* Glass / nav */
+  --blur-glass: blur(20px) saturate(180%); /* @kind other */
+  --nav-bg: rgba(255,251,245,0.7);
+
+  /* Motion — calm, confident, Apple-ish ease */
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast: 0.2s; /* @kind other */
+  --dur-base: 0.4s; /* @kind other */
+  --dur-slow: 0.8s; /* @kind other */
+  --dur-theme: 0.5s; /* @kind other */
+}
+
+[data-theme="dark"] {
+  --shadow-soft: 0 4px 24px rgba(0,0,0,0.30);
+  --shadow-raised: 0 8px 32px rgba(0,0,0,0.40);
+  --nav-bg: rgba(15,17,23,0.8);
+}

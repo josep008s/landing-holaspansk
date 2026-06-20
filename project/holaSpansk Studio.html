@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>holaSpansk · Estudio de publicaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --rojo:#E11D48; --rojo-osc:#BE123C; --amarillo:#F59E0B; --naranja:#EA580C;
+    --azul:#0EA5E9; --buganvilla:#C42A6B; --violeta:#8E3A86; --terracota:#C2703F;
+    --mar:#1B7E96; --verde:#5C8A4A; --melocoton:#F4A86E; --cobalto:#1E3A8A;
+    --tinta:#1F2937; --ink:#15171E; --cal:#F6ECDC; --blanco:#FFFBF5;
+    --arena:#F5F0E8; --sombra:#A7A6C8;
+    --line:rgba(31,41,55,0.10);
+    --line-soft:rgba(31,41,55,0.06);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0; font-family:'Poppins',system-ui,sans-serif; color:var(--tinta);
+    background:#E7DCC9;
+    background-image:radial-gradient(120% 80% at 50% -20%, #F6ECDC 0%, #E7DCC9 60%, #DACEB6 100%);
+    -webkit-font-smoothing:antialiased;
+  }
+  button{ font-family:inherit; cursor:pointer; }
+  input,textarea{ font-family:inherit; }
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb{ background:rgba(31,41,55,0.18); border-radius:20px; border:2px solid transparent; background-clip:padding-box; }
+
+  /* ---------- shell ---------- */
+  .app{ height:100vh; display:flex; flex-direction:column; }
+
+  .topbar{
+    flex:none; height:62px; background:var(--ink); color:var(--blanco);
+    display:flex; align-items:center; gap:18px; padding:0 22px;
+    box-shadow:0 2px 0 rgba(0,0,0,0.05);
+  }
+  .brand{ display:flex; align-items:center; gap:11px; }
+  .brand .logo{ width:34px; height:34px; border-radius:50%; padding:1.5px; background:linear-gradient(135deg,#FCD34D,#EA580C); }
+  .brand .logo img{ width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid var(--ink); display:block; }
+  .brand .name{ font-weight:700; font-size:16px; letter-spacing:-0.01em; }
+  .brand .name b{ color:var(--amarillo); font-weight:700; }
+  .brand .sub{ font-family:'Fraunces',serif; font-style:italic; font-weight:400; font-size:13px; color:rgba(255,251,245,0.55); margin-left:2px; }
+  .topbar .spacer{ flex:1; }
+
+  .seg{ display:flex; background:rgba(255,255,255,0.08); border-radius:11px; padding:3px; gap:2px; }
+  .seg button{ border:none; background:transparent; color:rgba(255,251,245,0.6); font-weight:600; font-size:12.5px; padding:7px 14px; border-radius:8px; letter-spacing:0.01em; transition:.15s; }
+  .seg button.on{ background:var(--blanco); color:var(--ink); box-shadow:0 1px 4px rgba(0,0,0,0.18); }
+
+  .btn{ border:none; border-radius:11px; font-weight:600; font-size:13.5px; padding:10px 18px; display:inline-flex; align-items:center; gap:8px; transition:.15s; }
+  .btn-primary{ background:var(--rojo); color:#fff; }
+  .btn-primary:hover{ background:var(--rojo-osc); }
+  .btn-ghost-lite{ background:rgba(255,255,255,0.10); color:var(--blanco); }
+  .btn-ghost-lite:hover{ background:rgba(255,255,255,0.18); }
+
+  /* ---------- body grid ---------- */
+  .body{ flex:1; display:grid; grid-template-columns:312px 1fr 322px; min-height:0; }
+  .col{ min-height:0; display:flex; flex-direction:column; }
+  .col.left{ border-right:1px solid var(--line); background:rgba(255,251,245,0.55); }
+  .col.right{ border-left:1px solid var(--line); background:rgba(255,251,245,0.55); }
+  .col.stage{ overflow:hidden; }
+
+  .panel-head{ flex:none; padding:18px 20px 12px; }
+  .panel-head .eyebrow{ font-size:10.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-muted,#9CA3AF); }
+  .panel-head h2{ margin:3px 0 0; font-family:'Fraunces',serif; font-weight:600; font-size:20px; letter-spacing:-0.01em; }
+
+  .panel-scroll{ flex:1; overflow-y:auto; padding:0 20px 24px; }
+
+  /* ---------- ideas (left) ---------- */
+  .search{ display:flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--line); border-radius:11px; padding:9px 12px; margin-bottom:12px; }
+  .search input{ border:none; outline:none; flex:1; font-size:13.5px; background:transparent; color:var(--tinta); }
+  .search svg{ color:#9CA3AF; flex:none; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .chip{ border:1px solid var(--line); background:#fff; color:var(--tinta); font-size:11.5px; font-weight:600; padding:5px 11px; border-radius:100px; transition:.15s; }
+  .chip.on{ background:var(--tinta); color:#fff; border-color:var(--tinta); }
+  .chip .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+
+  .idea{ width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:14px; padding:13px 14px; margin-bottom:9px; transition:.14s; position:relative; overflow:hidden; }
+  .idea:hover{ border-color:rgba(31,41,55,0.22); transform:translateY(-1px); box-shadow:0 8px 22px -14px rgba(43,30,60,0.45); }
+  .idea .bar{ position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .idea .pilar{ font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+  .idea .ttl{ font-family:'Fraunces',serif; font-weight:600; font-size:15.5px; line-height:1.18; margin-top:5px; letter-spacing:-0.01em; color:var(--tinta); }
+  .idea .sub{ font-size:11.5px; color:#6B7280; margin-top:4px; font-family:'Fraunces',serif; font-style:italic; }
+
+  .import-row{ display:flex; gap:8px; margin-bottom:14px; }
+  .import-row .btn-mini{ flex:1; border:1px dashed rgba(31,41,55,0.28); background:rgba(255,255,255,0.6); color:var(--tinta); border-radius:11px; padding:9px; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:7px; transition:.15s; }
+  .import-row .btn-mini:hover{ border-color:var(--rojo); color:var(--rojo); }
+  .count{ font-size:11px; color:#9CA3AF; margin-bottom:10px; font-weight:500; }
+
+  /* ---------- stage (center) ---------- */
+  .stage-wrap{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; gap:18px; min-height:0; }
+  .stage-box{ position:relative; box-shadow:0 40px 90px -34px rgba(43,30,60,0.6), 0 6px 20px rgba(43,30,60,0.16); border-radius:8px; }
+  .scaler{ position:absolute; top:0; left:0; transform-origin:top left; }
+
+  /* the post (rendered at natural pixels, scaled to fit) */
+  .post{ position:relative; overflow:hidden; background:#222; }
+  .post .bg{ position:absolute; inset:0; background-size:cover; background-position:center; }
+  .post .ov{ position:absolute; inset:0; }
+  .post .content{ position:absolute; inset:0; display:flex; flex-direction:column; padding:96px; }
+  .post .kicker{ font-family:'Poppins',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.18em; }
+  .post .titular{ font-family:'Fraunces',serif; font-weight:700; letter-spacing:-0.02em; line-height:1.02; }
+  .post .subt{ font-family:'Fraunces',serif; font-style:italic; font-weight:500; line-height:1.2; }
+  .post .logo-mark{ position:absolute; display:flex; align-items:center; gap:14px; }
+  .post .logo-mark .ring{ border-radius:50%; padding:3px; background:linear-gradient(135deg,#FCD34D,#EA580C); }
+  .post .logo-mark .ring img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
+  .post .logo-mark .handle{ font-family:'Poppins',sans-serif; font-weight:600; }
+
+  .stage-foot{ display:flex; align-items:center; gap:10px; }
+  .fmt-pill{ font-size:11.5px; font-weight:600; color:#6B7280; background:rgba(255,255,255,0.7); border:1px solid var(--line); padding:6px 13px; border-radius:100px; }
+
+  /* ---------- design controls (right) ---------- */
+  .field{ margin-bottom:18px; }
+  .field > label{ display:block; font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:#6B7280; margin-bottom:8px; }
+  .seg-lite{ display:flex; gap:5px; background:rgba(31,41,55,0.05); border-radius:10px; padding:4px; }
+  .seg-lite button{ flex:1; border:none; background:transparent; color:#6B7280; font-weight:600; font-size:11.5px; padding:7px 4px; border-radius:7px; transition:.14s; }
+  .seg-lite button.on{ background:#fff; color:var(--tinta); box-shadow:0 1px 4px rgba(43,30,60,0.14); }
+
+  .tpl-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .tpl{ position:relative; border:2px solid transparent; border-radius:11px; overflow:hidden; aspect-ratio:1.45; background:var(--ink); padding:0; transition:.14s; }
+  .tpl.on{ border-color:var(--rojo); }
+  .tpl .mini{ position:absolute; inset:0; padding:9px; display:flex; flex-direction:column; }
+  .tpl .lab{ position:absolute; left:0; right:0; bottom:0; font-size:10px; font-weight:600; color:#fff; background:rgba(0,0,0,0.34); padding:4px 7px; }
+
+  .swatches{ display:flex; flex-wrap:wrap; gap:8px; }
+  .sw{ width:30px; height:30px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 1px var(--line); position:relative; transition:.12s; }
+  .sw.on{ box-shadow:0 0 0 2px var(--tinta); transform:scale(1.08); }
+  .sw.on::after{ content:''; position:absolute; inset:0; border-radius:50%; border:2px solid #fff; }
+
+  .bg-grid{ }
+  .bg-tabs{ display:flex; gap:4px; margin-bottom:9px; background:rgba(31,41,55,0.05); border-radius:9px; padding:3px; }
+  .bg-tab{ flex:1; border:none; background:transparent; color:#6B7280; font-weight:600; font-size:11px; padding:6px 4px; border-radius:6px; transition:.14s; }
+  .bg-tab.on{ background:#fff; color:var(--tinta); box-shadow:0 1px 3px rgba(43,30,60,0.14); }
+  .bg-hint{ font-size:10.5px; color:#9CA3AF; margin:-3px 0 8px 2px; font-weight:500; }
+  .bg-scroll{ display:grid; grid-template-columns:repeat(4,1fr); gap:7px; max-height:236px; overflow-y:auto; padding:2px; }
+  .bgo .vtag{ position:absolute; bottom:3px; right:3px; font-size:8px; font-weight:700; color:#fff; background:rgba(21,23,30,0.6); padding:1px 4px; border-radius:4px; letter-spacing:0.02em; }
+  .bgo{ aspect-ratio:1; border-radius:9px; overflow:hidden; border:2px solid transparent; background-size:cover; background-position:center; transition:.12s; position:relative; }
+  .bgo.on{ border-color:var(--rojo); }
+  .bgo.upload{ display:flex; align-items:center; justify-content:center; background:rgba(31,41,55,0.05); color:#6B7280; border:2px dashed rgba(31,41,55,0.22); }
+
+  input[type=range]{ -webkit-appearance:none; width:100%; height:5px; border-radius:10px; background:rgba(31,41,55,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:17px; height:17px; border-radius:50%; background:var(--rojo); cursor:pointer; box-shadow:0 2px 6px rgba(43,30,60,0.35); }
+  .range-row{ display:flex; align-items:center; gap:12px; }
+  .range-row .val{ font-size:11.5px; font-weight:600; color:#6B7280; width:42px; text-align:right; flex:none; }
+
+  .txt-in{ width:100%; border:1px solid var(--line); border-radius:11px; padding:10px 12px; font-size:13.5px; color:var(--tinta); background:#fff; outline:none; resize:none; transition:.14s; }
+  .txt-in:focus{ border-color:var(--rojo); }
+  textarea.txt-in{ font-family:'Fraunces',serif; font-weight:600; font-size:15px; line-height:1.2; }
+  .hint{ font-size:10.5px; color:#9CA3AF; margin-top:4px; }
+
+  .divider{ height:1px; background:var(--line-soft); margin:6px 0 18px; }
+
+  /* import modal */
+  .modal-bg{ position:fixed; inset:0; background:rgba(21,23,30,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:50; padding:24px; }
+  .modal-bg.open{ display:flex; }
+  .modal{ width:560px; max-width:100%; background:var(--blanco); border-radius:20px; padding:26px; box-shadow:0 50px 120px -30px rgba(43,30,60,0.6); }
+  .modal h3{ margin:0; font-family:'Fraunces',serif; font-weight:600; font-size:22px; letter-spacing:-0.01em; }
+  .modal p{ font-size:13px; color:#6B7280; line-height:1.5; margin:8px 0 16px; }
+  .modal code{ background:rgba(31,41,55,0.06); padding:1px 6px; border-radius:5px; font-size:12px; }
+  .modal textarea{ width:100%; height:150px; border:1px solid var(--line); border-radius:12px; padding:12px; font-size:12.5px; font-family:ui-monospace,Menlo,monospace; outline:none; resize:vertical; }
+  .modal-foot{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:16px; }
+  .modal .btn-text{ background:transparent; border:none; color:#6B7280; font-weight:600; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo"><img src="assets/logo.png" alt=""></div>
+      <div>
+        <span class="name">hola<b>Spansk</b></span>
+        <span class="sub">Estudio</span>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="seg" id="fmtSeg">
+      <button data-fmt="post" class="on">Post 1:1</button>
+      <button data-fmt="story">Story 9:16</button>
+    </div>
+    <button class="btn btn-ghost-lite" id="randomBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h4l12 16h-4M4 20h4l3-4M20 4h-4l-3 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      Sorpréndeme
+    </button>
+    <button class="btn btn-primary" id="exportBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      Descargar PNG
+    </button>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- LEFT: IDEAS -->
+    <div class="col left">
+      <div class="panel-head">
+        <div class="eyebrow">Banco de ideas</div>
+        <h2>Frases &amp; conceptos</h2>
+      </div>
+      <div class="panel-scroll">
+        <div class="import-row">
+          <button class="btn-mini" id="importCsvBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            Importar CSV / Excel
+          </button>
+          <button class="btn-mini" id="pasteBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="2" stroke="currentColor" stroke-width="2"></rect><path d="M9 4V3h6v1" stroke="currentColor" stroke-width="2"></path></svg>
+            Pegar
+          </button>
+        </div>
+        <input type="file" id="csvInput" accept=".csv,.tsv,text/csv" style="display:none">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+          <input type="text" id="searchInput" placeholder="Buscar una frase…">
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="count" id="count"></div>
+        <div id="ideaList"></div>
+      </div>
+    </div>
+
+    <!-- CENTER: STAGE -->
+    <div class="col stage">
+      <div class="stage-wrap">
+        <div class="stage-box" id="stageBox">
+          <div class="scaler" id="scaler">
+            <div class="post" id="post"></div>
+          </div>
+        </div>
+        <div class="stage-foot">
+          <span class="fmt-pill" id="dimPill">1080 × 1080 px</span>
+          <span class="fmt-pill" id="tplPill">Plantilla</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: DESIGN -->
+    <div class="col right">
+      <div class="panel-head">
+        <div class="eyebrow">Diseño</div>
+        <h2>Composición</h2>
+      </div>
+      <div class="panel-scroll">
+
+        <div class="field">
+          <label>Plantilla</label>
+          <div class="tpl-grid" id="tplGrid"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>Fondo</label>
+          <div class="seg-lite" id="bgTypeSeg">
+            <button data-bg="photo" class="on">Foto</button>
+            <button data-bg="solid">Color</button>
+          </div>
+        </div>
+
+        <div class="field" id="bgPhotoField">
+          <div class="bg-grid" id="bgGrid"></div>
+          <input type="file" id="imgInput" accept="image/*" style="display:none">
+        </div>
+
+        <div class="field">
+          <label>Posición vertical de la foto</label>
+          <div class="range-row">
+            <input type="range" id="bgPos" min="0" max="100" value="50">
+            <span class="val" id="bgPosVal">50%</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>Tinte de marca</label>
+          <div class="swatches" id="ovSwatches"></div>
+        </div>
+
+        <div class="field">
+          <label>Estilo del tinte</label>
+          <div class="seg-lite" id="ovStyleSeg">
+            <button data-ov="solid" class="on">Sólido</button>
+            <button data-ov="bottom">Abajo</button>
+            <button data-ov="diag">Diagonal</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Opacidad del tinte</label>
+          <div class="range-row">
+            <input type="range" id="ovOpacity" min="0" max="100" value="70">
+            <span class="val" id="ovOpacityVal">70%</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>Antetítulo</label>
+          <input type="text" class="txt-in" id="inKicker" placeholder="Ej. Palabras con alma">
+        </div>
+        <div class="field">
+          <label>Titular</label>
+          <textarea class="txt-in" id="inTitular" rows="2" placeholder="La frase principal"></textarea>
+          <div class="hint">Usa Enter para saltar de línea.</div>
+        </div>
+        <div class="field">
+          <label>Subtítulo</label>
+          <input type="text" class="txt-in" id="inSub" placeholder="Remate en cursiva (opcional)">
+        </div>
+
+        <div class="field">
+          <label>Color del texto</label>
+          <div class="seg-lite" id="textColorSeg">
+            <button data-tc="light" class="on">Claro</button>
+            <button data-tc="dark">Oscuro</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tamaño del titular</label>
+          <div class="range-row">
+            <input type="range" id="fontScale" min="70" max="140" value="100">
+            <span class="val" id="fontScaleVal">100%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Firma</label>
+          <div class="seg-lite" id="logoSeg">
+            <button data-logo="1" class="on">@holaspansk</button>
+            <button data-logo="0">Sin firma</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>Pegar desde Excel o Sheets</h3>
+    <p>Copia tus celdas y pégalas aquí. Una fila por idea, columnas separadas por tabulador o coma, en el orden: <code>pilar</code> · <code>antetítulo</code> · <code>titular</code> · <code>subtítulo</code>. La primera fila puede ser de cabeceras.</p>
+    <textarea id="pasteArea" placeholder="Palabras con alma&#9;&#9;sobremesa&#9;eso no se traduce&#10;Sobremesa&#9;Ritual&#9;La mesa no se levanta.&#9;Se vive."></textarea>
+    <div class="modal-foot">
+      <button class="btn-text" id="modalCancel">Cancelar</button>
+      <button class="btn btn-primary" id="modalAdd">Añadir al banco</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// DATA
+// ---------------------------------------------------------------------------
+const PILARES = {
+  'El método':        { color:'#E11D48', imgs:['uploads/11-clase-espanol.png','uploads/10-mercado.png','uploads/13-calle-bici.png','uploads/28-mujer-moderna.png','uploads/07-plaza-bienvenida.png'] },
+  'Palabras con alma':{ color:'#15171E', imgs:['uploads/29-bodegon-espanol.png','uploads/18-detalle-manos.png','uploads/17-detalle-libro.png','uploads/19-motivo-llave.png','uploads/20-motivo-sol.png','uploads/24-calle-naranjos.png'] },
+  'Sobremesa':        { color:'#C2703F', imgs:['uploads/05-sobremesa-mixta.png','uploads/26-paella-moderna.png','uploads/14-brindis-vermut.png','uploads/08-cocinar-abuela.png','uploads/25-tapas-moderno.png','uploads/29-bodegon-espanol.png'] },
+  'Norge vs España':  { color:'#0EA5E9', imgs:['uploads/14-brindis-vermut.png','uploads/06-cafe-vecino.png','uploads/15-petanca.png','uploads/07-plaza-bienvenida.png','uploads/13-calle-bici.png'] },
+  'Vivir más':        { color:'#EA580C', imgs:['uploads/01-hero-terraza.png','uploads/28-mujer-moderna.png','uploads/16-pareja-azotea.png','uploads/27-guitarrista-moderno.png','uploads/09-fiesta-pueblo.png','uploads/20-motivo-sol.png'] },
+  'Manifiesto':       { color:'#C42A6B', imgs:['uploads/22-pueblo-blanco-andaluz.png','uploads/21-calle-casco-antiguo.png','uploads/23-patio-andaluz.png','uploads/24-calle-naranjos.png','uploads/19-motivo-llave.png','uploads/02-umbral-recien-llegado.png'] },
+};
+
+// Brand image library — Sorolla-style luminist paintings
+const LIBRARY = [
+  { src:'uploads/01-hero-terraza.png',          label:'Terraza al sol',        cat:'Gente'    },
+  { src:'uploads/05-sobremesa-mixta.png',       label:'Sobremesa',             cat:'Gente'    },
+  { src:'uploads/14-brindis-vermut.png',        label:'Brindis · vermut',      cat:'Gente'    },
+  { src:'uploads/26-paella-moderna.png',        label:'Paella entre amigos',   cat:'Gente'    },
+  { src:'uploads/27-guitarrista-moderno.png',   label:'Guitarra en la azotea', cat:'Gente'    },
+  { src:'uploads/08-cocinar-abuela.png',        label:'Cocinar con la abuela', cat:'Gente'    },
+  { src:'uploads/09-fiesta-pueblo.png',         label:'Fiesta de pueblo',      cat:'Gente'    },
+  { src:'uploads/11-clase-espanol.png',         label:'Clase de español',      cat:'Gente'    },
+  { src:'uploads/15-petanca.png',               label:'Petanca',               cat:'Gente'    },
+  { src:'uploads/16-pareja-azotea.png',         label:'Pareja en la azotea',   cat:'Gente', v:true },
+  { src:'uploads/28-mujer-moderna.png',         label:'Copa con vistas',       cat:'Gente', v:true },
+  { src:'uploads/04-terraza-invitacion.png',    label:'Invitación a la mesa',  cat:'Gente'    },
+
+  { src:'uploads/22-pueblo-blanco-andaluz.png', label:'Pueblo blanco',         cat:'Lugares'  },
+  { src:'uploads/21-calle-casco-antiguo.png',   label:'Casco antiguo',         cat:'Lugares'  },
+  { src:'uploads/23-patio-andaluz.png',         label:'Patio andaluz',         cat:'Lugares'  },
+  { src:'uploads/24-calle-naranjos.png',        label:'Calle de naranjos',     cat:'Lugares'  },
+  { src:'uploads/12-balcon-geranios.png',       label:'Balcón con geranios',   cat:'Lugares'  },
+  { src:'uploads/13-calle-bici.png',            label:'Calle en bici',         cat:'Lugares'  },
+  { src:'uploads/10-mercado.png',               label:'Mercado',               cat:'Lugares'  },
+  { src:'uploads/07-plaza-bienvenida.png',      label:'Plaza',                 cat:'Lugares'  },
+  { src:'uploads/06-cafe-vecino.png',           label:'Café del vecino',       cat:'Lugares'  },
+  { src:'uploads/02-umbral-recien-llegado.png', label:'Umbral',                cat:'Lugares'  },
+  { src:'uploads/03-umbral-vertical.png',       label:'Umbral · vertical',     cat:'Lugares', v:true },
+  { src:'uploads/30-cafe-vertical-9x16.png',    label:'Café · vertical',       cat:'Lugares', v:true },
+
+  { src:'uploads/29-bodegon-espanol.png',       label:'Bodegón español',       cat:'Detalles' },
+  { src:'uploads/25-tapas-moderno.png',         label:'Tapas',                 cat:'Detalles' },
+  { src:'uploads/18-detalle-manos.png',         label:'Manos',                 cat:'Detalles' },
+  { src:'uploads/17-detalle-libro.png',         label:'Libro y café',          cat:'Detalles', v:true },
+  { src:'uploads/19-motivo-llave.png',          label:'La llave',              cat:'Detalles' },
+  { src:'uploads/20-motivo-sol.png',            label:'El sol',                cat:'Detalles' },
+];
+const PRESET_IMGS = LIBRARY.map(o=>o.src);
+
+let ideas = [
+  { pilar:'El método', kicker:'El método, no tú', titular:'Tu profe de español\nte mintió.', sub:'', tpl:'frase', bg:'solid' },
+  { pilar:'Palabras con alma', kicker:'Palabras con alma', titular:'sobremesa', sub:'eso no se traduce', tpl:'palabra', bg:'solid' },
+  { pilar:'Sobremesa', kicker:'Ritual', titular:'3 timer.\nUna mesa.', sub:'Eso es sobremesa.', tpl:'foto', bg:'photo' },
+  { pilar:'Vivir más', kicker:'', titular:'Deja el libro.\nPide la caña.', sub:'', tpl:'frase', bg:'solid' },
+  { pilar:'Norge vs España', kicker:'Noruega vs España', titular:'«Skal vi ta en kaffe?»\n= 4 minutter.', sub:'Aquí, 2 horas.', tpl:'frase', bg:'solid' },
+  { pilar:'Manifiesto', kicker:'', titular:'No vendemos cursos.', sub:'Abrimos ventanas.', tpl:'cita', bg:'solid' },
+  { pilar:'El método', kicker:'', titular:'Aprobaste el examen.', sub:'Y enmudeces pidiendo una cerveza.', tpl:'frase', bg:'solid' },
+  { pilar:'Vivir más', kicker:'La filosofía', titular:'Vivir más,\nno hacer más.', sub:'', tpl:'cita', bg:'photo' },
+  { pilar:'Palabras con alma', kicker:'Palabras con alma', titular:'duende', sub:'no tiene traducción', tpl:'palabra', bg:'solid' },
+  { pilar:'Sobremesa', kicker:'Ritual', titular:'La mesa no se levanta.', sub:'Se vive.', tpl:'foto', bg:'photo' },
+  { pilar:'Norge vs España', kicker:'', titular:'I Norge: planlegging.', sub:'En España: ya veremos.', tpl:'frase', bg:'solid' },
+  { pilar:'El método', kicker:'Sin vergüenza', titular:'Habla mal.\nPero habla.', sub:'', tpl:'frase', bg:'solid' },
+  { pilar:'Manifiesto', kicker:'', titular:'El español no se estudia.', sub:'Se vive.', tpl:'cita', bg:'solid' },
+  { pilar:'Palabras con alma', kicker:'Palabras con alma', titular:'estrenar', sub:'ese placer no se traduce', tpl:'palabra', bg:'solid' },
+  { pilar:'Vivir más', kicker:'', titular:'La prisa es noruega.', sub:'La calma, española.', tpl:'cita', bg:'photo' },
+  { pilar:'Sobremesa', kicker:'Domingo', titular:'Tres horas de mesa\ny nadie mira el reloj.', sub:'', tpl:'foto', bg:'photo' },
+];
+
+// ---------------------------------------------------------------------------
+// STATE
+// ---------------------------------------------------------------------------
+const state = {
+  fmt:'post',
+  tpl:'frase',
+  bgType:'photo',
+  bgImg:PRESET_IMGS[0],
+  bgPos:50,
+  bgCat:'Todas',
+  bgSolid:'#E11D48',
+  ovColor:'#E11D48',
+  ovStyle:'solid',
+  ovOpacity:70,
+  kicker:'El método, no tú',
+  titular:'Tu profe de español\nte mintió.',
+  sub:'',
+  textColor:'light',
+  fontScale:100,
+  showLogo:true,
+  filter:'Todas',
+  search:'',
+  currentPilar:'El método',
+};
+
+const TEMPLATES = [
+  { id:'frase',   label:'Frase',          align:'bottom-left' },
+  { id:'palabra', label:'Palabra · alma', align:'center' },
+  { id:'foto',    label:'Foto + cita',    align:'bottom-left' },
+  { id:'cita',    label:'Manifiesto',     align:'center' },
+];
+
+// ---------------------------------------------------------------------------
+// HELPERS
+// ---------------------------------------------------------------------------
+function hexToRgb(h){ h=h.replace('#',''); if(h.length===3) h=h.split('').map(c=>c+c).join(''); const n=parseInt(h,16); return [n>>16&255, n>>8&255, n&255]; }
+function rgba(hex,a){ const [r,g,b]=hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function nl2br(s){ return esc(s).replace(/\n/g,'<br>'); }
+
+// ---------------------------------------------------------------------------
+// RENDER POST
+// ---------------------------------------------------------------------------
+const DIMS = { post:[1080,1080], story:[1080,1920] };
+
+function renderPost(){
+  const [W,H] = DIMS[state.fmt];
+  const post = document.getElementById('post');
+  post.style.width = W+'px';
+  post.style.height = H+'px';
+
+  const light = state.textColor==='light';
+  const mainColor = light ? '#FFFBF5' : '#1F2937';
+  const subColor  = light ? 'rgba(255,251,245,0.78)' : 'rgba(31,41,55,0.66)';
+  const kickColor = light ? '#F6C765' : state.ovColor;
+
+  // background
+  let bgHTML='';
+  if(state.bgType==='photo' && state.bgImg){
+    bgHTML = `<div class="bg" style="background-image:url('${state.bgImg}'); background-position:center ${state.bgPos}%;"></div>`;
+  } else if(state.bgType==='solid'){
+    bgHTML = `<div class="bg" style="background:${state.bgSolid};"></div>`;
+  }
+
+  // overlay tint
+  const op = state.ovOpacity/100;
+  let ov='';
+  if(state.ovStyle==='solid'){
+    ov = rgba(state.ovColor, op);
+  } else if(state.ovStyle==='bottom'){
+    ov = `linear-gradient(180deg, ${rgba(state.ovColor, Math.max(0,op-0.55))} 0%, ${rgba(state.ovColor, op)} 100%)`;
+  } else {
+    ov = `linear-gradient(135deg, ${rgba(state.ovColor, op)} 0%, ${rgba(state.ovColor, Math.max(0,op-0.5))} 60%, ${rgba(state.ovColor, Math.max(0,op-0.65))} 100%)`;
+  }
+  const ovHTML = `<div class="ov" style="background:${ov};"></div>`;
+
+  // typography sizes scale with format + slider
+  const fs = state.fontScale/100;
+  const isStory = state.fmt==='story';
+  let titSize, kickSize, subSize, pad;
+  const tpl = state.tpl;
+
+  if(tpl==='palabra'){
+    titSize = (isStory?168:150) * fs;
+    kickSize = isStory?27:24;
+    subSize = isStory?40:36;
+  } else if(tpl==='cita'){
+    titSize = (isStory?108:92) * fs;
+    kickSize = isStory?26:23;
+    subSize = isStory?52:46;
+  } else { // frase / foto
+    titSize = (isStory?104:90) * fs;
+    kickSize = isStory?25:22;
+    subSize = isStory?46:40;
+  }
+  pad = isStory ? 110 : 96;
+
+  const tplDef = TEMPLATES.find(t=>t.id===tpl);
+  const align = tplDef.align;
+
+  let justify = align.startsWith('bottom') ? 'flex-end' : 'center';
+  let alignItems = align.endsWith('center') ? 'center' : 'flex-start';
+  let textAlign = align.endsWith('center') ? 'center' : 'left';
+
+  const kickerHTML = state.kicker ? `<div class="kicker" style="font-size:${kickSize}px; color:${kickColor}; margin-bottom:${tpl==='palabra'?20:18}px;">${nl2br(state.kicker)}</div>` : '';
+  const titHTML = state.titular ? `<div class="titular" style="font-size:${titSize}px; color:${mainColor}; ${tpl==='palabra'?'text-transform:none; font-weight:600; letter-spacing:-0.02em;':''}">${nl2br(state.titular)}</div>` : '';
+  const subHTML = state.sub ? `<div class="subt" style="font-size:${subSize}px; color:${subColor}; margin-top:${tpl==='palabra'?22:20}px;">${nl2br(state.sub)}</div>` : '';
+
+  // story: nudge content up from very bottom so it's not under the nav zone
+  const contentHTML = `<div class="content" style="padding:${pad}px; justify-content:${justify}; align-items:${alignItems}; text-align:${textAlign};">
+      ${kickerHTML}${titHTML}${subHTML}
+    </div>`;
+
+  // logo signature
+  let logoHTML='';
+  if(state.showLogo){
+    const ringSz = isStory?78:70;
+    const handleSz = isStory?32:29;
+    const handleColor = light ? 'rgba(255,251,245,0.92)' : 'rgba(31,41,55,0.82)';
+    // place opposite to text gravity
+    const pos = align.startsWith('bottom') ? `top:${pad}px; left:${pad}px;` : `bottom:${pad}px; left:50%; transform:translateX(-50%);`;
+    logoHTML = `<div class="logo-mark" style="${pos}">
+        <div class="ring" style="width:${ringSz}px; height:${ringSz}px;"><img src="assets/logo.png" alt=""></div>
+        <span class="handle" style="font-size:${handleSz}px; color:${handleColor};">@holaspansk</span>
+      </div>`;
+  }
+
+  post.innerHTML = bgHTML + ovHTML + contentHTML + logoHTML;
+
+  // scaling to fit stage
+  fitStage(W,H);
+  document.getElementById('dimPill').textContent = `${W} × ${H} px`;
+  document.getElementById('tplPill').textContent = tplDef.label;
+}
+
+function fitStage(W,H){
+  const wrap = document.querySelector('.stage-wrap');
+  const availW = wrap.clientWidth - 60;
+  const availH = wrap.clientHeight - 110;
+  const scale = Math.min(availW/W, availH/H, 0.62);
+  const box = document.getElementById('stageBox');
+  const scaler = document.getElementById('scaler');
+  scaler.style.transform = `scale(${scale})`;
+  box.style.width = (W*scale)+'px';
+  box.style.height = (H*scale)+'px';
+}
+
+// ---------------------------------------------------------------------------
+// IDEAS LIST
+// ---------------------------------------------------------------------------
+function renderChips(){
+  const box = document.getElementById('chips');
+  const cats = ['Todas', ...Object.keys(PILARES)];
+  box.innerHTML = cats.map(c=>{
+    const dot = c==='Todas' ? '' : `<span class="dot" style="background:${PILARES[c].color}"></span>`;
+    return `<button class="chip ${state.filter===c?'on':''}" data-cat="${esc(c)}">${dot}${c}</button>`;
+  }).join('');
+  box.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{ state.filter=b.dataset.cat; renderChips(); renderIdeas(); });
+}
+
+function renderIdeas(){
+  const list = document.getElementById('ideaList');
+  const q = state.search.toLowerCase();
+  const filtered = ideas.filter(i=>{
+    const okCat = state.filter==='Todas' || i.pilar===state.filter;
+    const hay = (i.titular+' '+i.sub+' '+i.kicker+' '+i.pilar).toLowerCase();
+    return okCat && hay.includes(q);
+  });
+  document.getElementById('count').textContent = `${filtered.length} idea${filtered.length===1?'':'s'}`;
+  list.innerHTML = filtered.map((i)=>{
+    const idx = ideas.indexOf(i);
+    const col = (PILARES[i.pilar]&&PILARES[i.pilar].color) || '#9CA3AF';
+    return `<button class="idea" data-i="${idx}">
+      <div class="bar" style="background:${col}"></div>
+      <div class="pilar" style="color:${col}">${esc(i.pilar)}</div>
+      <div class="ttl">${nl2br(i.titular)}</div>
+      ${i.sub?`<div class="sub">${esc(i.sub)}</div>`:''}
+    </button>`;
+  }).join('') || `<div style="font-size:13px;color:#9CA3AF;padding:14px 2px;">Nada por aquí. Prueba otra búsqueda.</div>`;
+  list.querySelectorAll('.idea').forEach(b=>b.onclick=()=>applyIdea(ideas[+b.dataset.i]));
+}
+
+function applyIdea(idea){
+  state.kicker = idea.kicker||'';
+  state.titular = idea.titular||'';
+  state.sub = idea.sub||'';
+  state.tpl = idea.tpl || 'frase';
+  state.currentPilar = idea.pilar;
+  const col = (PILARES[idea.pilar]&&PILARES[idea.pilar].color) || '#E11D48';
+  state.ovColor = col;
+  state.bgSolid = col;
+  // smart defaults per template
+  if(idea.bg){ state.bgType = idea.bg; }
+  if(state.tpl==='palabra' || state.tpl==='cita'){ state.textColor='light'; }
+  if(state.bgType==='solid'){ state.ovStyle='solid'; state.ovOpacity= state.tpl==='palabra'?100:88; }
+  else { state.ovStyle = (state.tpl==='foto'?'bottom':'diag'); state.ovOpacity= state.tpl==='foto'?72:62; }
+  // auto-pair a recommended brand image for this pilar
+  if(state.bgType==='photo'){
+    const pool = (PILARES[idea.pilar]&&PILARES[idea.pilar].imgs)||[];
+    if(pool.length){ state.bgImg = pool[Math.floor(Math.random()*pool.length)]; }
+    state.bgCat = 'Recomendadas';
+  }
+  syncControls();
+  renderPost();
+}
+
+// ---------------------------------------------------------------------------
+// CONTROL PANELS
+// ---------------------------------------------------------------------------
+function renderTplGrid(){
+  const grid = document.getElementById('tplGrid');
+  grid.innerHTML = TEMPLATES.map(t=>{
+    let mini='';
+    const c='#FFFBF5';
+    if(t.id==='frase') mini=`<div class="mini" style="justify-content:flex-end;background:#E11D48;"><div style="font-family:'Fraunces';font-weight:700;font-size:13px;color:${c};line-height:1;">Aa</div></div>`;
+    if(t.id==='palabra') mini=`<div class="mini" style="justify-content:center;align-items:center;background:#15171E;"><div style="font-family:'Fraunces';font-weight:600;font-size:15px;color:${c};">word</div></div>`;
+    if(t.id==='foto') mini=`<div class="mini" style="justify-content:flex-end;background-image:linear-gradient(180deg,transparent,rgba(0,0,0,.6)),url('uploads/05-sobremesa-mixta.png');background-size:cover;background-position:center;"><div style="font-family:'Fraunces';font-style:italic;font-size:11px;color:${c};">cita</div></div>`;
+    if(t.id==='cita') mini=`<div class="mini" style="justify-content:center;align-items:center;background:#C42A6B;text-align:center;"><div style="font-family:'Fraunces';font-weight:600;font-size:11px;color:${c};line-height:1.1;">“…”</div></div>`;
+    return `<button class="tpl ${state.tpl===t.id?'on':''}" data-tpl="${t.id}">${mini}<div class="lab">${t.label}</div></button>`;
+  }).join('');
+  grid.querySelectorAll('.tpl').forEach(b=>b.onclick=()=>{ state.tpl=b.dataset.tpl; renderTplGrid(); renderPost(); });
+}
+
+function renderBgGrid(){
+  const cats = ['Recomendadas','Todas','Gente','Lugares','Detalles'];
+  const tabs = `<div class="bg-tabs">${cats.map(c=>`<button class="bg-tab ${state.bgCat===c?'on':''}" data-cat="${c}">${c==='Recomendadas'?'★':c}</button>`).join('')}</div>`;
+  let items;
+  if(state.bgCat==='Recomendadas'){
+    const pool = (PILARES[state.currentPilar]&&PILARES[state.currentPilar].imgs)||[];
+    items = pool.map(src=>LIBRARY.find(o=>o.src===src)).filter(Boolean);
+  } else {
+    items = LIBRARY.filter(o=>state.bgCat==='Todas'||o.cat===state.bgCat);
+  }
+  const hint = state.bgCat==='Recomendadas' ? `<div class="bg-hint">Para <b style="color:${(PILARES[state.currentPilar]||{}).color}">${state.currentPilar}</b></div>` : '';
+  let cells = items.map(o=>`<button class="bgo ${state.bgType==='photo'&&state.bgImg===o.src?'on':''}" data-src="${o.src}" title="${o.label}" style="background-image:url('${o.src}')">${o.v?'<span class="vtag">9:16</span>':''}</button>`).join('');
+  // any uploaded image not in library
+  if(state.bgImg && !PRESET_IMGS.includes(state.bgImg) && state.bgImg.startsWith('data:')){
+    cells = `<button class="bgo on" data-src="${state.bgImg}" title="Tu foto" style="background-image:url('${state.bgImg}')"></button>` + cells;
+  }
+  const upload = `<button class="bgo upload" id="uploadBg" title="Subir foto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 16V6m0 0l-4 4m4-4l4 4M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>`;
+  const grid = document.getElementById('bgGrid');
+  grid.innerHTML = tabs + hint + `<div class="bg-scroll">${upload}${cells}</div>`;
+  grid.querySelectorAll('.bg-tab').forEach(b=>b.onclick=()=>{ state.bgCat=b.dataset.cat; renderBgGrid(); });
+  grid.querySelectorAll('.bgo[data-src]').forEach(b=>b.onclick=()=>{ state.bgType='photo'; state.bgImg=b.dataset.src; syncSegs(); renderBgGrid(); renderPost(); });
+  document.getElementById('uploadBg').onclick=()=>document.getElementById('imgInput').click();
+}
+
+function renderSwatches(){
+  const box = document.getElementById('ovSwatches');
+  const cols = ['#E11D48','#EA580C','#F59E0B','#C42A6B','#8E3A86','#0EA5E9','#1B7E96','#5C8A4A','#C2703F','#15171E'];
+  box.innerHTML = cols.map(c=>`<button class="sw ${state.ovColor.toLowerCase()===c.toLowerCase()?'on':''}" data-c="${c}" style="background:${c}"></button>`).join('');
+  box.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{ state.ovColor=b.dataset.c; state.bgSolid=b.dataset.c; renderSwatches(); renderPost(); });
+}
+
+// keep segmented controls + inputs in sync with state
+function syncSegs(){
+  document.querySelectorAll('#fmtSeg button').forEach(b=>b.classList.toggle('on', b.dataset.fmt===state.fmt));
+  document.querySelectorAll('#bgTypeSeg button').forEach(b=>b.classList.toggle('on', b.dataset.bg===state.bgType));
+  document.querySelectorAll('#ovStyleSeg button').forEach(b=>b.classList.toggle('on', b.dataset.ov===state.ovStyle));
+  document.querySelectorAll('#textColorSeg button').forEach(b=>b.classList.toggle('on', b.dataset.tc===state.textColor));
+  document.querySelectorAll('#logoSeg button').forEach(b=>b.classList.toggle('on', (b.dataset.logo==='1')===state.showLogo));
+  document.getElementById('bgPhotoField').style.display = state.bgType==='photo' ? '' : 'none';
+}
+
+function syncControls(){
+  document.getElementById('inKicker').value = state.kicker;
+  document.getElementById('inTitular').value = state.titular;
+  document.getElementById('inSub').value = state.sub;
+  document.getElementById('ovOpacity').value = state.ovOpacity;
+  document.getElementById('ovOpacityVal').textContent = state.ovOpacity+'%';
+  document.getElementById('bgPos').value = state.bgPos;
+  document.getElementById('bgPosVal').textContent = state.bgPos+'%';
+  document.getElementById('fontScale').value = state.fontScale;
+  document.getElementById('fontScaleVal').textContent = state.fontScale+'%';
+  renderTplGrid(); renderBgGrid(); renderSwatches(); syncSegs();
+}
+
+// ---------------------------------------------------------------------------
+// CSV / PASTE IMPORT
+// ---------------------------------------------------------------------------
+function parseTable(text){
+  const rows = text.trim().split(/\r?\n/).filter(r=>r.trim());
+  if(!rows.length) return [];
+  const delim = rows[0].includes('\t') ? '\t' : ',';
+  const split = (line)=>{
+    const out=[]; let cur=''; let q=false;
+    for(let i=0;i<line.length;i++){ const ch=line[i];
+      if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+      else if(ch===delim && !q){ out.push(cur); cur=''; }
+      else cur+=ch;
+    } out.push(cur); return out.map(s=>s.trim());
+  };
+  let parsed = rows.map(split);
+  // detect header
+  const head = parsed[0].map(h=>h.toLowerCase());
+  const hasHeader = head.some(h=>/pilar|titular|frase|antet|subt|kicker/.test(h));
+  let map = {pilar:0,kicker:1,titular:2,sub:3};
+  if(hasHeader){
+    const find=(re,def)=>{ const i=head.findIndex(h=>re.test(h)); return i>=0?i:def; };
+    map = { pilar:find(/pilar|categor|tema/,0), kicker:find(/antet|kicker|eyebrow/,1), titular:find(/titular|frase|texto|principal/,2), sub:find(/subt|remate|sub/,3) };
+    parsed = parsed.slice(1);
+  }
+  const valid = Object.keys(PILARES);
+  return parsed.map(c=>{
+    let pilar = c[map.pilar]||'';
+    if(!valid.includes(pilar)) pilar = valid.find(v=>v.toLowerCase()===pilar.toLowerCase()) || 'Manifiesto';
+    return { pilar, kicker:c[map.kicker]||'', titular:c[map.titular]||c[0]||'', sub:c[map.sub]||'', tpl:'frase', bg:'solid' };
+  }).filter(i=>i.titular);
+}
+
+function addIdeas(newOnes){
+  if(!newOnes.length) return;
+  ideas = [...newOnes, ...ideas];
+  state.filter='Todas';
+  renderChips(); renderIdeas();
+  // flash count
+  const c=document.getElementById('count');
+  c.style.color='#E11D48'; c.textContent=`+${newOnes.length} añadidas · ${ideas.length} en total`;
+  setTimeout(()=>{ c.style.color=''; renderIdeas(); }, 2200);
+}
+
+// ---------------------------------------------------------------------------
+// WIRE UP
+// ---------------------------------------------------------------------------
+// format
+document.querySelectorAll('#fmtSeg button').forEach(b=>b.onclick=()=>{ state.fmt=b.dataset.fmt; syncSegs(); renderPost(); });
+// bg type
+document.querySelectorAll('#bgTypeSeg button').forEach(b=>b.onclick=()=>{ state.bgType=b.dataset.bg; syncSegs(); renderPost(); });
+// overlay style
+document.querySelectorAll('#ovStyleSeg button').forEach(b=>b.onclick=()=>{ state.ovStyle=b.dataset.ov; syncSegs(); renderPost(); });
+// text color
+document.querySelectorAll('#textColorSeg button').forEach(b=>b.onclick=()=>{ state.textColor=b.dataset.tc; syncSegs(); renderPost(); });
+// logo
+document.querySelectorAll('#logoSeg button').forEach(b=>b.onclick=()=>{ state.showLogo=b.dataset.logo==='1'; syncSegs(); renderPost(); });
+
+// sliders
+document.getElementById('ovOpacity').oninput=(e)=>{ state.ovOpacity=+e.target.value; document.getElementById('ovOpacityVal').textContent=state.ovOpacity+'%'; renderPost(); };
+document.getElementById('bgPos').oninput=(e)=>{ state.bgPos=+e.target.value; document.getElementById('bgPosVal').textContent=state.bgPos+'%'; renderPost(); };
+document.getElementById('fontScale').oninput=(e)=>{ state.fontScale=+e.target.value; document.getElementById('fontScaleVal').textContent=state.fontScale+'%'; renderPost(); };
+
+// text inputs
+document.getElementById('inKicker').oninput=(e)=>{ state.kicker=e.target.value; renderPost(); };
+document.getElementById('inTitular').oninput=(e)=>{ state.titular=e.target.value; renderPost(); };
+document.getElementById('inSub').oninput=(e)=>{ state.sub=e.target.value; renderPost(); };
+
+// search
+document.getElementById('searchInput').oninput=(e)=>{ state.search=e.target.value; renderIdeas(); };
+
+// image upload
+document.getElementById('imgInput').onchange=(e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ state.bgImg=r.result; state.bgType='photo'; syncSegs(); renderBgGrid(); renderPost(); };
+  r.readAsDataURL(f);
+};
+
+// csv upload
+document.getElementById('importCsvBtn').onclick=()=>document.getElementById('csvInput').click();
+document.getElementById('csvInput').onchange=(e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ addIdeas(parseTable(r.result)); };
+  r.readAsText(f); e.target.value='';
+};
+
+// paste modal
+const modalBg=document.getElementById('modalBg');
+document.getElementById('pasteBtn').onclick=()=>{ modalBg.classList.add('open'); document.getElementById('pasteArea').focus(); };
+document.getElementById('modalCancel').onclick=()=>modalBg.classList.remove('open');
+modalBg.onclick=(e)=>{ if(e.target===modalBg) modalBg.classList.remove('open'); };
+document.getElementById('modalAdd').onclick=()=>{
+  const t=document.getElementById('pasteArea').value;
+  addIdeas(parseTable(t));
+  document.getElementById('pasteArea').value='';
+  modalBg.classList.remove('open');
+};
+
+// surprise me
+document.getElementById('randomBtn').onclick=()=>{ applyIdea(ideas[Math.floor(Math.random()*ideas.length)]); };
+
+// export
+document.getElementById('exportBtn').onclick=async()=>{
+  const btn=document.getElementById('exportBtn');
+  const old=btn.innerHTML; btn.innerHTML='Generando…'; btn.style.pointerEvents='none';
+  try{
+    await (document.fonts?document.fonts.ready:Promise.resolve());
+    const [W,H]=DIMS[state.fmt];
+    const canvas=await html2canvas(document.getElementById('post'),{ width:W, height:H, scale:1, useCORS:true, allowTaint:false, backgroundColor:null, logging:false });
+    const a=document.createElement('a');
+    a.download=`holaspansk-${state.fmt}-${Date.now()}.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  }catch(err){ console.error(err); alert('No se pudo exportar la imagen.'); }
+  btn.innerHTML=old; btn.style.pointerEvents='';
+};
+
+window.addEventListener('resize', ()=>{ const [W,H]=DIMS[state.fmt]; fitStage(W,H); });
+
+// init
+renderChips();
+renderIdeas();
+syncControls();
+renderPost();
+// re-fit once fonts/images settle
+if(document.fonts) document.fonts.ready.then(renderPost);
+window.addEventListener('load', renderPost);
+</script>
+</body>
+</html>

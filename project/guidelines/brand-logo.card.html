@@ -1,0 +1,23 @@
+<!-- @dsCard group="Brand" viewport="700x300" name="Logo — azulejo wordmark" subtitle="Painted ceramic-tile mark. Give it air; never recolor or flatten." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin:0; font-family: var(--font-sans); background: var(--surface-sand); display:flex; align-items:center; gap:36px; padding:28px; }
+  img { width:200px; height:200px; border-radius: var(--radius-lg); box-shadow: var(--shadow-raised); }
+  .word { font-size:34px; font-weight:900; letter-spacing:-0.03em; }
+  .word .h { color: var(--hs-amarillo); }
+  .word .s { color: var(--hs-rojo); }
+  .sub { font-size:13px; color: var(--text-secondary); margin-top:8px; max-width:300px; line-height:1.5; }
+</style>
+</head>
+<body>
+  <img src="../assets/logo.png" alt="holaSpansk">
+  <div>
+    <div class="word"><span class="h">hola</span><span class="s">Spansk</span></div>
+    <div class="sub">Wordmark fallback (Poppins 900): <strong>hola</strong> in Amarillo, <strong>Spansk</strong> in Rojo. Use the painted tile for hero / profile contexts.</div>
+  </div>
+</body>
+</html>
