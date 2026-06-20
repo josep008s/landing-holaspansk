@@ -38,7 +38,12 @@ const { window } = dom;
 // wire jsdom globals + the couple of APIs jsdom lacks
 global.window = window;
 global.document = window.document;
-// Node 22 provides a read-only global `navigator`; jsdom's lives on `window`.
+// `navigator` is a read-only global on Node 21+ but absent on Node 20, where
+// react-dom's event-system init references it at mount. Define it only when
+// missing so this runs on any Node version.
+if (typeof globalThis.navigator === 'undefined') {
+  Object.defineProperty(globalThis, 'navigator', { value: window.navigator, configurable: true });
+}
 global.requestAnimationFrame = (cb) => setTimeout(() => cb(Date.now()), 0);
 global.cancelAnimationFrame = (id) => clearTimeout(id);
 window.requestAnimationFrame = global.requestAnimationFrame;
