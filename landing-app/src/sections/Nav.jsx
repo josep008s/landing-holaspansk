@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../components/ds/index.js';
+import { asset } from '../lib/asset.js';
 
 /**
  * Fixed top nav — glass background, brand wordmark, anchor links,
@@ -26,7 +27,7 @@ export function Nav({ theme, onToggleTheme }) {
   return (
     <nav className="top" ref={navRef}>
       <a href="#top" className="brand">
-        <img src="/assets/logo.png" alt="holaSpansk" />
+        <img src={asset('assets/logo.png')} alt="holaSpansk" />
         <span className="word"><span className="h">hola</span><span className="s">Spansk</span></span>
       </a>
       <div className="links">

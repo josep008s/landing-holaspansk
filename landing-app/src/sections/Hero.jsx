@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../components/ds/index.js';
+import { asset } from '../lib/asset.js';
 
 // holaSpansk — Hero. Cinematic painted pergola, parallax, framed "marco" overlay.
 export function Hero() {
@@ -31,7 +32,7 @@ export function Hero() {
       {/* painted background */}
       <div ref={bgRef} style={{
         position: 'absolute', inset: '-4%', zIndex: 0,
-        backgroundImage: "url('/assets/img/sorolla-pergola.jpg')",
+        backgroundImage: `url('${asset('assets/img/sorolla-pergola.jpg')}')`,
         backgroundSize: 'cover', backgroundPosition: 'center 32%',
         transform: 'scale(1.08)', transformOrigin: 'center',
         willChange: 'transform',

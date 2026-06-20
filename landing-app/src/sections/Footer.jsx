@@ -1,11 +1,12 @@
 import React from 'react';
+import { asset } from '../lib/asset.js';
 
 // holaSpansk — Footer on the dark ink surface.
 export function Footer() {
   return (
     <footer style={{ background: 'var(--surface-ink)', padding: '64px 24px 76px', textAlign: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 11, marginBottom: 14 }}>
-        <img src="/assets/logo.png" alt="" style={{ width: 36, height: 36, borderRadius: 8, opacity: 0.85 }} />
+        <img src={asset('assets/logo.png')} alt="" style={{ width: 36, height: 36, borderRadius: 8, opacity: 0.85 }} />
         <span style={{ fontSize: 24, fontWeight: 900, letterSpacing: '-0.03em' }}>
           <span style={{ color: 'var(--hs-amarillo)', opacity: 0.55 }}>hola</span><span style={{ color: 'var(--hs-rojo)', opacity: 0.55 }}>Spansk</span>
         </span>
